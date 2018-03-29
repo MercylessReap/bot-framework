@@ -1,2 +1,2 @@
 # bot-framework
-boiler point for microsoft
+boiler point for microsoft bot framework
