@@ -6,7 +6,7 @@ var index = require('./routes/webserver/index');
 var botHook = require('./routes/api/bot');
 var database = require('./routes/api/database');
 
-var port = process.env.PORT || 80;
+var port = process.env.PORT || 8080;
 
 var app = express();
 
