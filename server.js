@@ -14,7 +14,7 @@ app.use(express.static(__dirname + '/public'));
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
-app.use('/', () =>{ res.send('Hi World!!')});
+app.use('/', (req, res) =>{ res.send('Hi World!!')});
 app.use('/api', api);
 
 
