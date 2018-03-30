@@ -3,6 +3,7 @@ var Schema = mongoose.Schema;
 
 var departmentSchema = new Schema({
     name:{type: String, lowercase: true, unique: true},
+    accessToken: String,
     appID: String,
     appPass: String,
     analyticsID: String,

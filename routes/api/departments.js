@@ -38,6 +38,7 @@ router.post('/', (req, res, next) =>{
     console.log('Post a department');
     var newdepartment = new department();
     newdepartment.name = req.body.name;
+    newdeapartment.accessToken = req.body.accessToken;
     newdepartment.appID = req.body.appID;
     newdepartment.appPass = req.body.appPass;
     newdepartment.analyticsID = req.body.analyticsID;
@@ -58,7 +59,7 @@ router.put('/:id', (req, res, next) =>{
     console.log('Update a department');
     department.findByIdAndUpdate(req.params.id,
     {
-        $set: {name: req.body.name, appID: req.body.appID, appPass: req.body.appPass, analyticsID: req.body.analyticsID, confluence: req.body.confluence, botName: req.body.botName, updated: new Date}
+        $set: {name: req.body.name, accessToken: req.body.accessToken,appID: req.body.appID, appPass: req.body.appPass, analyticsID: req.body.analyticsID, confluence: req.body.confluence, botName: req.body.botName, updated: new Date}
     },
     {
         new: true
