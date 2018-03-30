@@ -1,11 +1,11 @@
 var express = require('express')
   , router = express.Router()
-  , department = require('./api/departments')
-  , intent = require('./api/intents')
-  , log = require('./api/logs')
-  , setting = require('./api/settings')
-  , team = require('./api/teams')
-  , user = require('./api/users');
+  , department = require('./database/departments')
+  , intent = require('./database/intents')
+  , log = require('./database/logs')
+  , setting = require('./database/settings')
+  , team = require('./database/teams')
+  , user = require('./database/users');
   
   router.use('/department', department);
   router.use('/intent', intent);
