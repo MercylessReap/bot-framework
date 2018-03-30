@@ -2,7 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var api = require('./routes/api');
 
-var port = 80;
+var port = process.env.PORT || 8080;
 var app = express();
 
 app.set('views', __dirname + '/views');
@@ -22,6 +22,4 @@ app.use('*', (req, res) =>{
     res.redirect('/');
 });
 
-app.listen(port, () =>{
-    console.log("Server running on port:" + port);
-})
+app.listen(port, () =>{console.log("Server running on port:" + port);})
