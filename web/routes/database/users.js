@@ -1,9 +1,9 @@
 var express = require('express');
 var router = express.Router();
-var mongoose = require('mongoose');
 var user = require('../../models/user');
+var mongoose = require('mongoose');
+var url = require('../../config/dbconfig');
 
-var url = "mongodb://localhost:27017/ddbot";
 mongoose.connect(url, { useMongoClient: true},(err) => {
     if(err){
         console.error("Error! " + err);

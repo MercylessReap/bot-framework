@@ -1,9 +1,17 @@
 var express = require('express');
 var router = express.Router();
-var mongoose = require('mongoose');
 var log = require('../../models/log');
+var mongoose = require('mongoose')
+, dbhost = process.env.dbHost || "localhost"
+, dbport = process.env.dbPort || "27017"
+, dbuser = process.env.dbUser+":"
+, dbpass = process.env.dbPass+"@";
 
-var url = "mongodb://localhost:27017/ddbot";
+  if(dbuser == "undefined:"){dbuser=""};
+  if(dbpass == "undefined@"){dbpass=""};
+
+var url = 'mongodb://'+dbuser+dbpass+dbhost+':'+dbport+'/ddbot';
+
 mongoose.connect(url, { useMongoClient: true},(err) =>{
     if(err){
         console.error("Error! " + err);
