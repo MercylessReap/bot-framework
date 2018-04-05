@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <% include ../../partials/head %>
+</head>
+
+<body class="fixed-nav sticky-footer bg-dark" id="page-top">
+
+    <header>
+        <% include ../../partials/header %>
+    </header>
+    <div class="content-wrapper">
+        <div class="container-fluid">
+            <!-- Breadcrumbs-->
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="/">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item active">Manage Users </li>
+            </ol>
+            <div class="row">
+                <div class="col-12">
+                    <h1>Manage Users
+                        <span class="btn-right">
+                            <button title="Add Team Member" type="button" data-toggle="modal" data-target=".bd-example-modal-lg" class="btn btn-sm btn-success">
+                                <i class="fa fa-user-plus"></i>
+                            </button>
+                        </span>
+                    </h1>
+                    <p>This is an example of a blank page that you can use as a starting point for creating new ones.</p>
+                </div>
+            </div>
+            <table id="tiTable" class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Department</th>
+                        <th scope="col">Last Updated</th>
+                        <th scope="col">Team Leader</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>Larry James</td>
+                        <td>IT</td>
+                        <td>05/03/2018 12:59</td>
+                        <td>Stuart Young</td>
+                        <td>
+                            <a href="?e=">Edit</a>
+                            <span class="btn-right">
+                                <a href="#">Revoke</a>
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2</th>
+                        <td>Harry Potter</td>
+                        <td>HR</td>
+                        <td>05/03/2018 12:59</td>
+                        <td>Stuart Young</td>
+                        <td>
+                            <a href="?e=">Edit</a>
+                            <span class="btn-right">
+                                <a href="#">Revoke</a>
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td>The Wizard</td>
+                        <td>Super User</td>
+                        <td>05/03/2018 12:59</td>
+                        <td>The Wizard</td>
+                        <td>
+                            <a href="?e=">Edit</a>
+                            <span class="btn-right">
+                                <a href="#">Revoke</a>
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <!-- /.container-fluid-->
+        <!-- /.content-wrapper-->
+        <% include ../../partials/footer %>
+
+
+</body>
+
+</html>

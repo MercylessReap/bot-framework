@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <% include ../../partials/head %>
+</head>
+
+<body class="fixed-nav sticky-footer bg-dark" id="page-top">
+
+    <header>
+        <% include ../../partials/header %>
+    </header>
+    <div class="content-wrapper">
+        <div class="container-fluid">
+            <!-- Breadcrumbs-->
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="/">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item active">Test Bot</li>
+            </ol>
+            <div class="row">
+                <div class="col-md-8 "style="max-height: 600px;min-height: 400px;">
+                        <iframe height="100%" width="100%" src='https://webchat.botframework.com/embed/Digi-Bot?s=C9cVgvi5UDc.cwA.83I.bLuT3ZIq1_mt6OPcpPFDnD1EZJJgm97KWQ_-QPb6_0A'>%</iframe>
+                </div>
+                <div class="col-md-4">
+                    <div id="data-output">
+                        <div id="do-user" class="output-group">
+                            <p>User Says</p>
+                            No input
+                        </div>
+                        <div id="do-bot" class="output-group">
+                            <p>Responce</p>
+                            Bot Default
+                        </div>
+                        <div id="do-intent" class="output-group">
+                            <p>Intent</p>
+                            Intent Used
+                        </div>
+                        <div id="do-action" class="output-group">
+                            <p> Action </p>
+                            Keyword Result
+                        </div>
+                        <div class="btn-output">
+                            <button type="button" class="btn btn-block btn-lg btn-info">Show JSON</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.container-fluid-->
+        <!-- /.content-wrapper-->
+        <% include ../../partials/footer %>
+
+
+</body>
+
+</html>

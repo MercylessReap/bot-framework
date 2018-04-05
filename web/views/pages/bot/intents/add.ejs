@@ -1,0 +1,33 @@
+<form action="../../api/intent" method="post">
+    <div class="modal-header">
+        <h5 class="modal-title">Add Intent</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="form-group">
+            <label for="intent-name">Name</label>
+            <input type="text" class="form-control" name="name" placeholder="Name">
+        </div>
+
+        <div class="form-group">
+            <label for="intent-description">Department</label>
+            <select class="form-control" name="department">
+                <option>Global</option>
+            </select>
+        </div>
+      
+        <div class="form-group">
+            <label for="intent-answer">Answer</label>
+            <input type="text" class="form-control" name="answer" placeholder="Answers">
+        </div>
+        <div class="form-group">
+            <input type="hidden" class="form-control" name="status" value="false">
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    </div>
+</form>

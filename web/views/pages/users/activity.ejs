@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <% include ../../partials/head %>
+</head>
+
+<body class="fixed-nav sticky-footer bg-dark" id="page-top">
+
+    <header>
+        <% include ../../partials/header %>
+    </header>
+    <div class="content-wrapper">
+        <div class="container-fluid">
+            <!-- Breadcrumbs-->
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="/">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item active">User Activity</li>
+            </ol>
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <h1>Activity Log</h1>
+                        <p>All Logs will display here!</p>
+                    </div>
+                    <table id="tiTable" class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Created</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Description</th>
+                                <th scope="col">Department</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>05/03/2018 12:59</td>
+                                <td>User Created</td>
+                                <td>User Tom Banks Created by Stuart Young</td>
+                                <td>IT</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2</th>
+                                <td>10/03/2018 11:59</td>
+                                <td>User Updated</td>
+                                <td>User Tom Banks Updated by Stuart Young</td>
+                                <td>IT</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">3</th>
+                                <td>15/03/2018 14:59</td>
+                                <td>Intent Created</td>
+                                <td>
+                                    <a href="#">Office Intent</a> Created by Tom Banks</td>
+                                <td>IT</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- /.container-fluid-->
+        <!-- /.content-wrapper-->
+        <% include ../../partials/footer %>
+
+
+</body>
+
+</html>
