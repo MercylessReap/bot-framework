@@ -1,0 +1,144 @@
+<%//Department Index.ejs 
+%>
+<!-- views/pages/index.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <% include ../../partials/head %>
+</head>
+<body class="fixed-nav sticky-footer bg-dark" id="page-top">
+
+<header>
+  <% include ../../partials/header %>
+</header>
+
+<div class="content-wrapper">
+    <div class="container-fluid">
+      <!-- Breadcrumbs-->
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="/">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active"><%=data.friendlyName%></li>
+      </ol>
+      <div class="row">
+        <div class="col-12">
+          <h1><%=data.friendlyName%> 
+            <span class="btn-right">
+              <button type="button" data-toggle="modal" data-target=".bd-publish-modal-lg" class="btn btn-md btn-success">Publish</button>
+              <button type="button" data-toggle="modal" data-target=".bd-delete-modal" class="btn btn-md btn-danger">Delete</button>
+            </span>
+          </h1>
+          <p id="deptInfo">Here you can edit the details for the departments bot. <br/> Bot Message Endpoint: </p>
+        </div>
+        <div class="container-fluid col-12">
+          <form id="putDepartment" action="/department/<%=data._id%>" method="post">
+            <div class="form-row">
+              <div class="form-group col-md-7">
+                <label for="departmentName">Department Name</label>
+                <input required type="text" class="form-control" id="departmentName" name="friendlyName" value="<%=data.friendlyName%>" placeholder="<%=data.friendlyName%>">
+              </div>
+              <div class="form-group col-md-5">
+                <label for="confluence">Confluence</label>
+                <input required type="text" class="form-control" id="confluence" name="confluence" value="<%=data.confluence%>"placeholder="Please enter Confluence Space...">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-2">
+                <label for="botName">Bot Name</label>
+                <input required type="text" class="form-control" id="botName" name="botName" value="<%=data.botName%>" placeholder="<%=data.botName%>">
+              </div>
+              <div class="form-group col-md-5">
+                <label for="microsoftAppID">Microsoft Bot App ID</label>
+                <input required type="text" class="form-control" id="microsoftAppID" name="microsoftAppID" value="<%=data.microsoftBotAppID%>" placeholder="<%=data.microsoftBotAppID%>">
+              </div>
+              <div class="form-group col-md-5">
+                <label for="microsoftAppPass">Microsoft Bot App Password</label>
+                <input required type="text" class="form-control" id="microsoftAppPass" name="microsoftAppPass" value="<%=data.microsoftBotAppPass%>" placeholder="<%=data.microsoftBotAppPass%>">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="sparkAcessToken">Cisco Spark Acess Token</label>
+                <input required type="text" class="form-control" id="sparkAcessToken" name="sparkAcessToken" value="<%=data.sparkAcessToken%>" placeholder="Please enter Cisco Spark Acess Token...">
+              </div>
+              <div class="form-group col-md-6">
+                <label for="analytics">Analytics</label>
+                <input required type="text" class="form-control" id="analytics" name="analytics" value="<%=data.analytics%>"placeholder="Please enter Analytics ID...">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-3">
+                <label for="luisName">Luis App Name</label>
+                <input required readonly type="text" class="form-control" id="luisName" name="name" value="<%=data.name%>" placeholder="<%=data.name%>">
+              </div>
+              <div class="form-group col-md-5">
+                <label for="luisAppID">LUIS App ID</label>
+                <input required readonly type="text" class="form-control" id="luisAppID" name="luisAppID" value="<%=data.luisAppID%>" placeholder="<%=data.luisAppID%>">
+              </div>
+              <div class="form-group col-md-1">
+                <label for="luisAppPass">App Ver</label>
+                <input required readonly type="text" class="form-control" id="luisAppVer" name="luisAppVer" value="<%=data.luisAppVer%>" placeholder="<%=data.luisAppVer%>">
+              </div>
+              <div class="form-group col-md-3">
+                <label for="luisState">LUIS Production State</label>
+                <% if(data.luisState ===''){var luisState = 'Unpublished', luisValue=''}else{luisState=luisValue=data.luisState}%>
+                <input required readonly type="text" class="form-control" id="luisState" name="luisState" value="<%=luisValue%>" placeholder="<%=luisState%>">
+              </div>
+            </div>    
+            <div class="form-group">
+              <input type="hidden" class="form-control" name="appid" value="<%=data.luisAppID%>">
+              <input type="hidden" class="form-control" name="id" value="<%=data._id%>">
+            </div>
+            <div class="form-group">
+                <input id="postDepartment" type="submit" value="save" class="btn btn-primary">
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- /.container-fluid-->
+    <!-- /.content-wrapper-->
+    <div class="modal fade bd-publish-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <% include publish %>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade bd-delete-modal" tabindex="-1" role="dialog" aria-labelledby="deleteDepartment" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Delete <%=data.friendlyName%></h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>Are you sure you want to delete this department?</p>
+            <p>Feature to delete All intents with this department comming soon</p>
+          </div>
+          <div class="modal-footer">
+            <a title="Let it go! Let it go! This department is not needed anyway" href="../../department/<%=data._id%>/delete/" class="btn btn-danger">Yes, I want this gone!</a>
+            <button title="What am I thinking! This department is needed" type="button" class="btn btn-secondary" data-dismiss="modal">No. Please stop me!</button>
+          </div>
+        </div>
+      </div>
+    </div>
+<% include ../../partials/footer %>
+<script>
+    var botEnd = document.getElementById('deptInfo');
+        botEnd.innerHTML= botEnd.innerHTML +' '+ botMesageEndpoint()
+  
+  function botMesageEndpoint(){
+    var host = window.location.protocol+'//'+window.location.hostname;
+    var botUrl = host + '/api/v1/'+document.getElementById('luisName').value+'/messeage';
+    return botUrl
+  }
+</script>
+
+</body>
+</html>

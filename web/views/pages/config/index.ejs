@@ -1,0 +1,216 @@
+<!-- views/pages/index.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <% include ../../partials/head %>
+</head>
+<body class="fixed-nav sticky-footer bg-dark" id="page-top">
+  <header>
+    <% include ../../partials/header %>
+  </header>
+  <div class="content-wrapper">
+    <div class="container-fluid">
+      <!-- Breadcrumbs-->
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="/config/">Config</a>
+        </li>
+        <li class="breadcrumb-item active">Portal Settings</li>
+      </ol>
+      <div class="row">
+        <div class="col-12">
+          <h1>Welcome to the Bot Portal</h1>
+          <p>This is where you can initalise the bot portal, for anything to work please update the azure access code
+             and common bot and database app ID and password.
+             <br/> For a department bot to work, please create a bot channel on the azure platform and supply the app
+             id and password to the department.</p>
+          <ul class="nav nav-pills justified-content-right" id="pills-tab" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" id="config-tab" data-toggle="pill" href="#config" role="tab" aria-controls="config" aria-selected="true">Portal Congiuration</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="department-tab" data-toggle="pill" href="#department" role="tab" aria-controls="department" aria-selected="false">Department Setup</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="logs-tab" data-toggle="pill" href="#logs" role="tab" aria-controls="logs" aria-selected="false">Logs</a>
+            </li>
+          </ul>
+          <div class="tab-content container-fluid" id="pills-tabContent">
+            <div class="tab-pane fade show active" id="config" role="tabpanel" aria-labelledby="config-tab">
+              <br/>
+              <p>Please enter your LUIS Regieon and <a href="https://portal.azure.com/#blade/HubsExtension/BrowseResourceBlade/resourceType/Microsoft.CognitiveServices%2Faccounts">Ocp Apim Subscription Key</a></p>
+              <p>Note. A <a href="https://azure.microsoft.com/en-us/try/cognitive-services/?api=spellcheck-api"> bing Spellcheck Api Key</a> is optional</p>
+              <form action="/config/" method="post">
+              <% if(skPlaceholder == '' ){skPlaceholder="Please enter Ocp Apim Subscription Key"}; %>
+              <%   if(bkPlaceholder == ''){bkPlaceholder="Please enter Bing Api Key -optional-"}; %>
+                <div class="form-row">
+                <input value="<%=confid%>" name="id" type="hidden">
+                <div class="form-group col-md-7">
+                  <label for="Ocp-Apim-Subscription-Key">Ocp Apim Subscription Key</label>
+                  <input required type="text" class="form-control" id="Ocp-Apim-Subscription-Key" name="subKey" value="<%=skValue%>" placeholder="<%=skPlaceholder%>">
+                </div>
+                <div class="form-group col-md-5">
+                  <label for="luisRegion">LUIS Region</label>
+                  <select required id="luisRegion" name="luisRegion" class="form-control">
+                  <% if(luisRegion === 'westus'){ %>
+                    <option selected>westus</option>
+                    <option>westeurope</option>
+                    <option>australiaeast</option>
+                  <% }else if(luisRegion === 'westeurope'){ %>
+                    <option>westus</option>
+                    <option selected>westeurope</option>
+                    <option>australiaeast</option>
+                  <%  }else if(luisRegion === 'australiaeast'){ %>
+                    <option>westus</option>
+                    <option>westeurope</option>
+                    <option selected>australiaeast</option>
+                  <% }else{ %>
+                    <option>westus</option>
+                    <option>westeurope</option>
+                    <option>australiaeast</option>
+                  <%  } %>
+                  </select>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-7">
+                  <label for="bingApiKey">Bing Api Key</label>
+                  <input type="text" class="form-control" id="bingApiKey" name="bingKey" value="<%=bkValue%>" placeholder="<%=bkPlaceholder%>">
+                </div>
+                <div class="form-group col-md-5">
+                  <label for="bingApiStatus">Bing Spell Checker Status</label>
+                  <select id="bingApiStatus" name="bingStatus" class="form-control" onchange="checkBing()">
+                  <% if(bingStatus == true){%>
+                    <option selected>Enabled</option>
+                    <option>Disabled</option>
+                  <% }else{%>
+                    <option>Enabled</option>
+                    <option selected>Disabled</option>
+                  <% }%>
+                  </select>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary">Save</button> 
+            </form>
+          </div>
+        <div class="tab-pane fade" id="department" role="tabpanel" aria-labelledby="department-tab">
+          <div class="row">
+            <div class="col-12">
+              <h1>Departments
+                <span class="btn-right">
+                  <button type="button" data-toggle="modal" data-target=".bd-example-modal-lg" class="btn btn-md btn-success">Add Department</button>
+                </span>
+              </h1>
+              <p>This is you can view existing questions the bot can answer, update them or create new ones.</p>
+            </div>
+
+            <div class="col-12">
+              <!-- list departments table -->
+              <table id="tiTable" class="table table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Created</th>
+                    <th scope="col">Updated</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="departmentList">
+                <% for(let i=0; i< departmentsData.length; i++) { %>
+                  <tr>
+                  <% var id = departmentsData[i]._id.toString(),
+                              count = i+1,
+                              b = departmentsData[i].updated.split(/\D+/),
+                              c = departmentsData[i].created.split(/\D+/),
+                              updated = new Date(Date.UTC(b[0], --b[1], b[2], b[3], b[4], b[5], b[6])),
+                              created = new Date(Date.UTC(b[0], --c[1], c[2], c[3], c[4], c[5], c[6])) 
+                     if(departmentsData[i].luisState ===''){var luisState = 'Unpublished', luisValue=''}else{luisState=luisValue=departmentsData[i].luisState}
+                  %>              
+                    <th scope='row'><%=count%></th>
+                    <td><%= departmentsData[i].friendlyName %></td>
+                    <td><%= created %></td>
+                    <td><%= updated%></td>
+                    <td><%= luisState %></td>
+                    <td><a class="btn btn-primary" href="/department/<%= id %>">View</a><span class="btn-right"><button class="btn btn-danger" onclick="deleteDepartment('<%= id %>')">Delete</button></span></td>
+                  </tr>
+                  <% } %>
+                </tbody>
+              </table>
+              <!-- end of department table -->
+              <!-- add department modal -->
+              <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                  <div class="modal-content">
+                    <% include add %>
+                  </div>
+                </div>
+              </div>
+              <!-- end of modal -->
+            </div>
+            <!-- end of col-12 -->
+          </div>
+          <!-- end of row -->
+        </div>
+        <!-- end of department tab panel -->
+        <div class="tab-pane fade" id="logs" role="tabpanel" aria-labelledby="logs-tab">
+          <br/>
+          <p>Comming Soon</p>
+          <div class="col-12">
+            <table id="tiTable" class="table table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Event</th>
+                  <th scope="col">Event Trigger</th>
+                  <th scope="col">Info</th>
+                  <th scope="col">Created</th>
+                </tr>
+              </thead>
+              <tbody id="logList">
+              <% for(var i=0; i< logsData.length; i++) { %>
+                <tr>
+                <%  var count = i+1,
+                        c = logsData[i].created.split(/\D+/),
+                        created = new Date(Date.UTC(b[0], --c[1], c[2], c[3], c[4], c[5], c[6])) %>         
+                  <th scope='row'><%=count%></th>
+                  <td><%= logsData[i].type %></td>
+                  <td><%= logsData[i].typeID %></td>
+                  <td><%= logsData[i].info%></td>
+                  <td><%= created %></td>
+                </tr>
+              <% } %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <script>
+    function deleteDepartment(id){ 
+      var url = window.location.protocol+'//'+window.location.hostname+'/department/'+id+'/delete/';
+      alert('are you sure?'+ url)
+    }
+    function checkBing(){
+        var bingKey = document.getElementById('bingApiKey'),bingStatus= document.getElementById('bingApiStatus')
+        if(bingKey.value === '' && bingStatus.value === 'Enabled'){
+            bingKey.required=true
+        }else{
+            bingKey.required=false
+        }
+    }
+  </script>
+</div>
+</div>
+    <!-- /.container-fluid-->
+    <!-- /.content-wrapper-->
+
+    <% include ../../partials/footer %>
+
+
+</body>
+
+</html>

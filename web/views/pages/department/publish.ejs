@@ -1,0 +1,43 @@
+<form id="publishApp" action="/department/publish/" method="post">
+    <div class="modal-header">
+        <h5 class="modal-title">Publish <%=data.name%></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="form-row">
+            <div class="form-group col-md-8">
+                <%if(data.luisState === ''){let luisState = 'unpublish'}else{luisState=data.luisState}
+                  if(config.bingStatus ===true){let bingStatus = 'Enabled'}else{bingStatus = 'Disabled'}%>
+                Published State: <%=luisState%><br/>
+                Published version: <%=data.luisAppVer%><br/>
+                Published Date: <%=data.luisPubDate%><br/>
+                Bing Spell Check: <%=bingStatus%> </p>
+            </div>
+            <div class="form-group col-md-4">
+                <label>Publish to</label>
+                <select name="luisState" class="form-control">
+                <% if(data.luisState === 'Staging'){ %>
+                    <option>Production</option>
+                    <option selected >Staging</option>
+                <% }else{%>
+                    <option selected >Production</option>
+                    <option>Staging</option>
+                <% }%>
+                </select>
+            </div>
+            <div class="form-group col-md-2">
+              <input required readonly type="hidden" class="form-control" id="deptID" name="id" value="<%=data._ID%>" placeholder="<%=data._ID%>">
+              <input required readonly type="hidden" class="form-control" id="luisRegion" name="region" value="<%=config.luisRegion%>" placeholder="<%=config.luisRegion%>">
+              <input required readonly type="hidden" class="form-control" id="subKey" name="subkey" value="<%=config.subscriptionKey%>" placeholder="<%=config.subscriptionKey%>">
+              <input required readonly type="hidden" class="form-control" id="luisAppID" name="luisAppID" value="<%=data.luisAppID%>" placeholder="<%=data.luisAppID%>">
+              <input required readonly type="hidden" class="form-control" id="luisAppVer" name="luisAppVer" value="<%=data.luisAppVer%>" placeholder="<%=data.luisAppVer%>">
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <input id="postDepartment" title="<%=data.friendlyName%> is ready!" type="submit" value="Publish" class="btn btn-primary">
+        <button type="button" title="Noooo... <%=data.friendlyName%> is not ready" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    </div>
+</form>

@@ -2,13 +2,13 @@
 <html lang="en">
 
 <head>
-    <% include ../../partials/head %>
+    <% include ../../../partials/head %>
 </head>
 
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
 
     <header>
-        <% include ../../partials/header %>
+        <% include ../../../partials/header %>
     </header>
     <div class="content-wrapper">
         <div class="container-fluid">
@@ -42,7 +42,28 @@
                             </tr>
                         </thead>
                         <tbody id="intentList">
+                            <% for(i=0; i< intentsData.length; i++) { %>
+                                <tr>
+                            <% var id = intentsData[i]._id.toString(),
+                                  disabled;
+                              if (intentsData[i].diasbled == "true") {disabled = 'Disabled'} else { disabled = 'Enabled'}
+                        
+                              var count = i+1;
+                              var b = intentsData[i].updated.split(/\D+/),
+                                  c = intentsData[i].created.split(/\D+/),
+                                  updated = new Date(Date.UTC(b[0], --b[1], b[2], b[3], b[4], b[5], b[6])),
+                                  created = new Date(Date.UTC(b[0], --c[1], c[2], c[3], c[4], c[5], c[6]))
 
+                              %>
+                              
+                              <th scope='row'><%=count%></th>
+                              <td><%= intentsData[i].name %></td>
+                              <td><%= intentsData[i].department %></td>
+                              <td><%= updated%></td>
+                              <td><%=disabled %></td>
+                              <td><a class="btn btn-primary" href="/bot-growth/intents/<%= id %>">View</a> <span class="btn-right"><a class="btn btn-primary" href="/bot-growth/intents/<%= id %>/delete/">Delete</a></span></td>
+                              </tr>
+                            <% } %>
                         </tbody>
                     </table>
 
@@ -54,8 +75,8 @@
         <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
-                    <% include intents/add %>
+                    <% include add %>
                 </div>
             </div>
         </div>
-        <% include ../../partials/footer %>
+        <% include ../../../partials/footer %>

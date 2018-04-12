@@ -5,7 +5,8 @@ var express = require('express')
   , log = require('./database/logs')
   , setting = require('./database/settings')
   , team = require('./database/teams')
-  , user = require('./database/users');
+  , user = require('./database/users')
+  , bot = require('../../bot/app');
   
   router.use('/department', department);
   router.use('/intent', intent);
@@ -13,4 +14,5 @@ var express = require('express')
   router.use('/setting', setting);
   router.use('/team', team);
   router.use('/user', user);
+  router.use('/v1/', bot);
   module.exports = router;

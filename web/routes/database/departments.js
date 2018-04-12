@@ -3,7 +3,9 @@ var router = express.Router();
 var department = require('../../models/department');
 var mongoose = require('mongoose')
   , url = require('../../config/dbconfig')
+  , axios = require('axios')
 
+mongoose.Promise= global.Promise;
 mongoose.connect(url, { useMongoClient: true},(err) =>{
     if(err){
         console.error("Error! " + err);
@@ -37,10 +39,14 @@ router.get('/:id', (req, res, next) =>{
 router.post('/', (req, res, next) =>{
     console.log('Post a department');
     var newdepartment = new department();
+    newdepartment.friendlyName = req.body.friendlyName;
     newdepartment.name = req.body.name;
-    newdeapartment.accessToken = req.body.accessToken;
-    newdepartment.appID = req.body.appID;
-    newdepartment.appPass = req.body.appPass;
+    newdepartment.sparkAccessToken = req.body.accessToken;
+    newdepartment.microsoftBotAppID = req.body.appID;
+    newdepartment.microsoftBotAppPass = req.body.appPass;
+    newdepartment.luisAppID = req.body.luisAppID;
+    newdepartment.luisAppVer = req.body.luisAppVer;
+    newdepartment.luisState = req.body.luisState;
     newdepartment.analyticsID = req.body.analyticsID;
     newdepartment.confluence = req.body.confluence;
     newdepartment.botName = req.body.botName;
@@ -54,12 +60,41 @@ router.post('/', (req, res, next) =>{
         }
     });
 })
-
+router.put('/publish/', (req, res, next) =>{
+    console.log('Update department publish details');
+    department.findByIdAndUpdate(req.body.id,
+    {
+        $set: {
+            luisState: req.body.luisState, 
+            luisPubDate: new Date,
+            updated: new Date}
+    },
+    {
+        new: true
+    },
+    (err, updateddepartment) =>{
+        if(err){
+            res.send("Error updating department publish details");
+        }else{
+            res.json(updateddepartment);
+        }
+    }
+    )
+})
 router.put('/:id', (req, res, next) =>{
     console.log('Update a department');
     department.findByIdAndUpdate(req.params.id,
     {
-        $set: {name: req.body.name, accessToken: req.body.accessToken,appID: req.body.appID, appPass: req.body.appPass, analyticsID: req.body.analyticsID, confluence: req.body.confluence, botName: req.body.botName, updated: new Date}
+        $set: {
+            friendlyName: req.body.name,
+            name: req.body.name, 
+            accessToken: req.body.accessToken,
+            appID: req.body.appID, 
+            appPass: req.body.appPass, 
+            analyticsID: req.body.analyticsID, 
+            confluence: req.body.confluence, 
+            botName: req.body.botName,
+            updated: new Date}
     },
     {
         new: true
@@ -73,6 +108,7 @@ router.put('/:id', (req, res, next) =>{
     }
     )
 })
+
 
 router.delete('/:id', (req, res, next) =>{
     console.log('Deleting a department');

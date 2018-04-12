@@ -2,15 +2,8 @@ var express = require('express');
 var router = express.Router();
 var log = require('../../models/log');
 var mongoose = require('mongoose')
-, dbhost = process.env.dbHost || "localhost"
-, dbport = process.env.dbPort || "27017"
-, dbuser = process.env.dbUser+":"
-, dbpass = process.env.dbPass+"@";
 
-  if(dbuser == "undefined:"){dbuser=""};
-  if(dbpass == "undefined@"){dbpass=""};
-
-var url = 'mongodb://'+dbuser+dbpass+dbhost+':'+dbport+'/ddbot';
+var url = require('../../config/dbconfig')
 
 mongoose.connect(url, { useMongoClient: true},(err) =>{
     if(err){

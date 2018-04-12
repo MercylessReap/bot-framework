@@ -1,7 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 
-var index = require('./routes/index');
+var index = require('./routes/webserver');
 var api = require('./routes/api');
 
 var port = process.env.PORT || 80;

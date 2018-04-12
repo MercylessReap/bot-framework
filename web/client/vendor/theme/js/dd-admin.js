@@ -12,48 +12,21 @@
     $(".navbar-sidenav .nav-link-collapse").addClass("collapsed");
     $(".navbar-sidenav .sidenav-second-level, .navbar-sidenav .sidenav-third-level").removeClass("show");
   });
-  // Intents table
-  document.getElementById('mainNav').addEventListener("load",loadIntents());
-  function loadIntents() {
-    var intentRequest = new XMLHttpRequest();
-    intentRequest.open('GET', 'http://localhost/api/intent');
-    intentRequest.onload = function () {
-      var intentsData = JSON.parse(intentRequest.responseText);
-      renderHTML(intentsData);
-    }
-    intentRequest.send();
+  // Change disable toggle from on to off
+  function toggleOn(toggle) {
+    $(toggle).bootstrapToggle('on')
   }
-
-  function parseISOString(s) {
-    var b = s.split(/\D+/);
-    return new Date(Date.UTC(b[0], --b[1], b[2], b[3], b[4], b[5], b[6]));
+  function toggleOff(toggle) {
+    $(toggle).bootstrapToggle('off')  
   }
-
-  function renderHTML(data) {
-    var table = [];
-    for (var i = 0; i < data.length; i++) {
-
-      var id = data[i]._id.toString(),
-        disabled
-      if (data[i].diasbled == "true") {
-        disabled = 'Disabled'
-      } else {
-        disabled = 'Enabled'
-      };
-
-      var count = i+1;
-      var row = "<th scope='row'>" + count + "</th>"
-      var name = "<td>" + data[i].name + "</td>"
-      var department = "<td>" + data[i].department + "</td>"
-      var updated = "<td>" + parseISOString(data[i].updated)+ "</td>"
-      var status = "<td>" + disabled + "</td>"
-      var inBtn = ' <td><a class="btn btn-primary" href="/bot-growth/intent/' + id + '">Edit</a><span class="btn-right"><a class="btn btn-primary" href="/bot-growth/intent/' + id + '/delete/'+ '">Delete</a></span></td>'
-      table = table +'<tr>' + row + name + department + updated + status + inBtn + '</tr>'
-      document.getElementById('intentList').innerHTML = table;
-    }
+  // Host Name
+  function botMesageEndpoint(){
+    var host = window.location.hostname;
+    var botUrl = host + 'api/v1/'+data.name+'/messeage';
+    return botUrl
   }
-
-
+   
+   
   // Force the toggled class to be removed when a collapsible nav link is clicked
   $(".navbar-sidenav .nav-link-collapse").click(function(e) {
     e.preventDefault();

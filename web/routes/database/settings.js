@@ -10,7 +10,7 @@ mongoose.connect(url, { useMongoClient: true},(err) =>{
     }
 });
 
-router.get('/settings', (req, res, next) => {
+router.get('/', (req, res, next) => {
     console.log('Get request for all settings');
     setting.find({})
     .exec((err, settings) => {
@@ -22,7 +22,7 @@ router.get('/settings', (req, res, next) => {
     })
 })
 
-router.get('/settings/:id', (req, res, next) => {
+router.get('/:id', (req, res, next) => {
     console.log('Get request for a single setting');
     setting.findById(req.params.id)
     .exec((err, settings) => {
@@ -34,7 +34,7 @@ router.get('/settings/:id', (req, res, next) => {
     })
 })
 
-router.post('/setting', (req, res, next) => {
+router.post('/', (req, res, next) => {
     console.log('Post a setting');
     var newsetting = new setting();
     newsetting.title = req.body.title;
@@ -49,11 +49,17 @@ router.post('/setting', (req, res, next) => {
     });
 })
 
-router.put('/setting/:id', (req, res, next) => {
+router.put('/:id', (req, res, next) => {
     console.log('Update a setting');
     setting.findByIdAndUpdate(req.params.id,
     {
-        $set: {title: req.body.title, url: req.body.url, description: req.body.description}
+        $set: { 
+            subscriptionKey: req.body.subKey, 
+            luisRegion: req.body.luisRegion, 
+            bingApiKey: req.body.bingKey,
+            bingSpellCheckEnabled: bingStatus,
+            updated: new Date
+        }
     },
     {
         new: true
@@ -68,7 +74,7 @@ router.put('/setting/:id', (req, res, next) => {
     )
 })
 
-router.delete('/setting/:id', (req, res, next) => {
+router.delete('/:id', (req, res, next) => {
     console.log('Deleting a setting');
     setting.findByIdAndRemove(req.params.id, (err, deletedsetting) =>{
         if(err){

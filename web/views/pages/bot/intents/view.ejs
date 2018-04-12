@@ -13,49 +13,66 @@
         <% include ../../../partials/header %>
     </header>
 
-    <div class="content-wrapper">
+    <div ng-app="" class="content-wrapper">
         <div class="container-fluid">
             <!-- Breadcrumbs-->
             <ol class="breadcrumb">
+                <li class="breadcrumb-item">{{department}}</li>
                 <li class="breadcrumb-item">
                     <a href="/bot-growth/intents">Intents</a>
                 </li>
                 <li class="breadcrumb-item active">
-                    <%= iName%>
+                    {{name}}
                 </li>
             </ol>
             <div class="row">
                 <div class="col-12">
-                    <h1>Blank</h1>
-                    <p>This is an example of a blank page that you can use as a starting point for creating new ones.</p>
-                    <form action="../../api/intent/<%= id %>" method="put">
+                    <div>
+                        <h1 class="ml-auto">{{name}}</h1> 
+                        <div class="mr-auto">
+                            <input type="checkbox" id="toggleStatus"> 
+                            <button class="btn btn-danger">Delete</button></div>
+                        <div class="clear-both"></div>
+                    </div>
+                    <form id="putIntent" action="/" method="get">
                         <div class="">
                             <div class="form-group">
-                                <label for="intent-name"><%=name%></label>
-                                <input type="text" class="form-control" name="name" placeholder="Name" value="<%=name%>">
+                                <label for="intent-name">Intent Name</label>
+                                <input type="text" class="form-control" value="<%=name%>" ng-model="name" ng-init="name='<%=name%>'"name="name" placeholder="<%=name%>" >
                             </div>
 
                             <div class="form-group">
-                                <label for="intent-description"><%=Department%></label>
-                                <select class="form-control" name="department" value="<%=department%>">
-                                    <option>Global</option>
+                                <label for="intent-description">Associated Department</label>
+                                <select class="form-control" ng-model="department" name="department" ng-init="department='<%=department%>'" value="<%=department%>">
+                                    <option><%=department%></option>
+                                    <option>HR</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="intent-trigger">Question</label>
-                                <input type="text" class="form-control" name="question" placeholder="<%=question%>" value="<%=question%>">
+                                <label for="intent-trigger">New Synonyms</label>
+                                <input type="text" class="form-control" id="newSynonym" placeholder="Add New Synonyms ">
                             </div>
                             <div class="form-group">
-                                <label for="intent-answer">Answer</label>
+                                <label for="intent-answer">Synonyms</label>
+                                <div id="synonymsList">
+                                    <% for(i=0; i<question.length; i++){ 
+                                        var syn = question[i] %>
+                                    <input type="text" class="form-control" class="Synonyms" placeholder="<%=syn%>" value="<%=syn%>">
+                                    <% } %>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="intent-answer">Bot Answer</label>
                                 <input type="text" class="form-control" name="answer" placeholder="<%=answer%>" value="<%=answer%>">
                             </div>
                             <div class="form-group">
-                                <input type="hidden" class="form-control" name="status" value="<%=status%>">
+                                <input readonly type="hidden" class="form-control" name="status" value="<%=id%>">
+                                <input readonly type="text" class="form-control" name="status" value="<%=status%>">
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary">Save changes</button>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <input id="save" onclick="validate()" value="Save Changes" class="btn btn-primary">
+                            <input id="cancel" onclick="returnOne()" value="Cancel" class="btn btn-secondary">
                         </div>
                     </form>
                 </div>
@@ -63,7 +80,29 @@
         </div>
         <!-- /.container-fluid-->
         <!-- /.content-wrapper-->
+        <script>
+            var input = document.getElementById("newSynonym");
 
+            // Execute a function when the user releases a key on the keyboard
+            input.addEventListener("keyup", function(event) {
+            // Cancel the default action, if needed
+            event.preventDefault();
+            // Number 13 is the "Enter" key on the keyboard
+            if (event.keyCode === 13) {
+                // Trigger the button element with a click
+                updateSynList(input.value)
+                
+            }
+            });
+            function validate(){
+                document.getElementById('putIntent').submit();
+            }
+            function updateSynList(syn){
+                alert(syn +' has been added')
+                var  synlist = document.getElementById('synonymsList').innerHTML
+                synlist = synlist + '<input type="text" class="form-control" class="Synonyms" placeholder="'+syn+'" value="'+syn+'">'
+            }
+        </script>
         <% include ../../../partials/footer %>
 
 

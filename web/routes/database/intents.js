@@ -38,7 +38,10 @@ router.get('/:id', (req, res, next) => {
 router.post('/', (req, res, next) =>{
     console.log('Post a intent');
     var newintent = new intent();
-    newintent.name = req.body.name;
+    newintent.luisID=req.body.luisID;
+    newintent.name = req.body.name.replace(/\s/g, '');
+    newintent.frienlyName = req.body.name;
+    newintent.synonyms = req.body.synonyms
     newintent.answer = req.body.answer;
     newintent.department = req.body.department;
     newintent.disabled = 'false';
@@ -48,8 +51,7 @@ router.post('/', (req, res, next) =>{
         if(err){
             res.send("Error saving intent");
         }else{
-            //res.json(insertedintent);
-            res.redirect('http://localhost/bot-growth/intents')
+            res.json(insertedintent);
         }
     });
 })
@@ -58,7 +60,7 @@ router.put('/:id', (req, res, next) => {
     console.log('Update a intent');
     intent.findByIdAndUpdate(req.params.id,
     { 
-        $set: {name: req.body.name, answer: req.body.answer, department: req.body.department, disabled: req.body.status, updated: new Date}
+        $set: {name: req.body.name.replace(/\s/g, ''),friendlyName: req.body.name, answer: req.body.answer, department: req.body.department, disabled: req.body.status, updated: new Date}
     },
     {
         new: true

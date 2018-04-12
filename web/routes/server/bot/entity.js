@@ -3,20 +3,7 @@ var express = require('express')
   , router = express.Router()
   , MongoClient = require('mongodb').MongoClient
   , assert = require('assert')
-  , timestamp = new Date(Date.now()).toLocaleString()
-  , dbhost = process.env.mongodbHost || "localhost"
-  , dbport = process.env.mongodbPort || "27017"
-  , dbuser = process.env.mongodbUser+":"
-  , dbpass = process.env.mongodbPass+"@";
-
-    if(dbuser == "undefined:"){
-        dbuser =""}
-    if(dbpass == "undefined@"){
-        dbpass=""};
-
-var url = 'mongodb://'+dbuser+dbpass+dbhost+':'+dbport;
-
-var db, intents, logs ;
+    axios = require('axios');
 
 
 router.get('/intents/',(req, res) =>{
@@ -25,8 +12,25 @@ router.get('/intents/',(req, res) =>{
     
 });
 router.get('/intent/:e/',(req, res) =>{
+  
+    axios.get('../../api/intent/'+req.params.e)
+    .then((response) => {
+      console.log(response);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
     
-  res.render('pages/bot/intents/view',{id:req.params.e})
+  res.render('pages/bot/intents/view',{
+      id:req.params.e,
+      name:'hi',
+      department:'global',
+      question: 'Hi There',
+      answer:'hello',
+      status:'true',
+      created:'yesterday',
+      updated:'today'
+    })
   
 });
 
