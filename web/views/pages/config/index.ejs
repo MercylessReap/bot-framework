@@ -187,12 +187,15 @@
         </div>
       </div>
     </div>
-
+    <% include ../department/delete %>
   </div>
   <script>
     function deleteDepartment(id){ 
-      var url = window.location.protocol+'//'+window.location.hostname+'/department/'+id+'/delete/';
-      alert('are you sure?'+ url)
+      let url = window.location.protocol+'//'+window.location.hostname+'/department/'+id+'/delete/',
+          delBtn = document.getElementById('delDepartmentBtn');
+      delBtn.href=url
+      $(".bd-delete-modal").modal()
+      
     }
     function checkBing(){
         var bingKey = document.getElementById('bingApiKey'),bingStatus= document.getElementById('bingApiStatus')
@@ -207,7 +210,6 @@
 </div>
     <!-- /.container-fluid-->
     <!-- /.content-wrapper-->
-
     <% include ../../partials/footer %>
 
 

@@ -60,7 +60,56 @@ router.post('/', (req, res, next) =>{
         }
     });
 })
-router.put('/publish/', (req, res, next) =>{
+
+router.put('/:id', (req, res, next) =>{
+    console.log('Update a department');
+    department.findByIdAndUpdate(req.params.id,
+    {
+        $set: {
+            friendlyName: req.body.friendlyName,
+            name: req.body.name,
+            sparkAccessToken: req.body.accessToken,
+            microsoftBotAppID: req.body.appID,
+            microsoftBotAppPass: req.body.appPass,
+            analyticsID: req.body.analyticsID,
+            confluence: req.body.confluence,
+            botName: req.body.botName,
+            updated: new Date
+        }
+    },
+    {
+        new: true
+    },
+    (err, updateddepartment) =>{
+        if(err){
+            res.send("Error updating department");
+        }else{
+            res.json(updateddepartment);
+        }
+    }
+    )
+})
+router.put('/:id/train/', (req, res, next) =>{
+    console.log('Update department publish details');
+    department.findByIdAndUpdate(req.body.id,
+    {
+        $set: {
+            luisTrainDate: new Date,
+            updated: new Date}
+    },
+    {
+        new: true
+    },
+    (err, updateddepartment) =>{
+        if(err){
+            res.send("Error updating department publish details");
+        }else{
+            res.json(updateddepartment);
+        }
+    }
+    )
+})
+router.put('/:id/publish/', (req, res, next) =>{
     console.log('Update department publish details');
     department.findByIdAndUpdate(req.body.id,
     {
@@ -81,34 +130,6 @@ router.put('/publish/', (req, res, next) =>{
     }
     )
 })
-router.put('/:id', (req, res, next) =>{
-    console.log('Update a department');
-    department.findByIdAndUpdate(req.params.id,
-    {
-        $set: {
-            friendlyName: req.body.name,
-            name: req.body.name, 
-            accessToken: req.body.accessToken,
-            appID: req.body.appID, 
-            appPass: req.body.appPass, 
-            analyticsID: req.body.analyticsID, 
-            confluence: req.body.confluence, 
-            botName: req.body.botName,
-            updated: new Date}
-    },
-    {
-        new: true
-    },
-    (err, updateddepartment) =>{
-        if(err){
-            res.send("Error updating department");
-        }else{
-            res.json(updateddepartment);
-        }
-    }
-    )
-})
-
 
 router.delete('/:id', (req, res, next) =>{
     console.log('Deleting a department');

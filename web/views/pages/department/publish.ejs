@@ -1,6 +1,6 @@
 <form id="publishApp" action="/department/publish/" method="post">
     <div class="modal-header">
-        <h5 class="modal-title">Publish <%=data.name%></h5>
+        <h5 class="modal-title">Publish <%=data.friendlyName%></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -28,7 +28,7 @@
                 </select>
             </div>
             <div class="form-group col-md-2">
-              <input required readonly type="hidden" class="form-control" id="deptID" name="id" value="<%=data._ID%>" placeholder="<%=data._ID%>">
+              <input required readonly type="hidden" class="form-control" id="deptID" name="id" value="<%=data._id%>" placeholder="<%=data._ID%>">
               <input required readonly type="hidden" class="form-control" id="luisRegion" name="region" value="<%=config.luisRegion%>" placeholder="<%=config.luisRegion%>">
               <input required readonly type="hidden" class="form-control" id="subKey" name="subkey" value="<%=config.subscriptionKey%>" placeholder="<%=config.subscriptionKey%>">
               <input required readonly type="hidden" class="form-control" id="luisAppID" name="luisAppID" value="<%=data.luisAppID%>" placeholder="<%=data.luisAppID%>">
@@ -37,7 +37,7 @@
         </div>
     </div>
     <div class="modal-footer">
-        <input id="postDepartment" title="<%=data.friendlyName%> is ready!" type="submit" value="Publish" class="btn btn-primary">
+        <input id="postDepartment" title="<%=data.friendlyName%> is ready! &#128521;" type="submit" value="Publish" class="btn btn-primary">
         <button type="button" title="Noooo... <%=data.friendlyName%> is not ready" class="btn btn-secondary" data-dismiss="modal">Close</button>
     </div>
 </form>

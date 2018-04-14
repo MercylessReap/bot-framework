@@ -1,6 +1,6 @@
 const express = require('express'),
       router = express.Router(),
-      api = require('../../../../lib/apii')
+      api = require(rootDir+'/lib/api')
 
 router.get('/',(req, res) =>{
   let setting, log, departments;
