@@ -2,22 +2,23 @@
 <html lang="en">
 
 <head>
-    <% include ../../../partials/head %>
+    <% include ../../../../partials/head %>
 </head>
 
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
 
     <header>
-        <% include ../../../partials/header %>
+        <% include ../../../../partials/header %>
     </header>
     <div class="content-wrapper">
         <div class="container-fluid">
             <!-- Breadcrumbs-->
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
-                    <a href="/">Dashboard</a>
+                    <a href="/dashboard/">Dashboard</a>
                 </li>
-                <li class="breadcrumb-item active">Intents Page</li>
+                <li class="breadcrumb-item">Department</li>
+                <li class="breadcrumb-item active">Intents</li>
             </ol>
             <div class="row">
                 <div class="col-12">
@@ -47,7 +48,9 @@
                             <% var id = intentsData[i]._id.toString(),
                                   disabled;
                               if (intentsData[i].diasbled == "true") {disabled = 'Disabled'} else { disabled = 'Enabled'}
-                        
+                              for(let ii=0; ii<departments.length; ii++){
+                                  if(intentsData[i].department == departments[ii]._id){department=departments[ii].friendlyName}
+                                  }
                               var count = i+1;
                               var b = intentsData[i].updated.split(/\D+/),
                                   c = intentsData[i].created.split(/\D+/),
@@ -58,10 +61,10 @@
                               
                               <th scope='row'><%=count%></th>
                               <td><%= intentsData[i].name %></td>
-                              <td><%= intentsData[i].department %></td>
+                              <td><%= department %></td>
                               <td><%= updated%></td>
                               <td><%=disabled %></td>
-                              <td><a class="btn btn-primary" href="/bot-growth/intents/<%= id %>">View</a> <span class="btn-right"><a class="btn btn-primary" href="/bot-growth/intents/<%= id %>/delete/">Delete</a></span></td>
+                              <td><a class="btn btn-primary" href="/department/intents/<%= id %>">View</a> <span class="btn-right"><button class="btn btn-danger" onclick="deleteintent('<%= id %>')">Delete</button></span></td>
                               </tr>
                             <% } %>
                         </tbody>
@@ -79,4 +82,13 @@
                 </div>
             </div>
         </div>
-        <% include ../../../partials/footer %>
+        <% include delete %>
+        <% include ../../../../partials/footer %>
+        <script>
+            function deleteintent(id){ 
+                let url = window.location.protocol+'//'+window.location.hostname+'/intent/'+id+'/delete/',
+                delBtn = document.getElementById('delIntentBtn');
+                delBtn.href=url
+                $(".bd-delete-modal").modal()
+            }
+        </script>

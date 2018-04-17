@@ -17,6 +17,9 @@
         <div class="container-fluid">
             <!-- Breadcrumbs-->
             <ol class="breadcrumb">
+                 <li class="breadcrumb-item">
+                    <a href="/dashboard/">Dashboard</a>
+                </li>
                 <li class="breadcrumb-item">{{department}}</li>
                 <li class="breadcrumb-item">
                     <a href="/bot-growth/intents">Intents</a>
@@ -28,24 +31,29 @@
             <div class="row">
                 <div class="col-12">
                     <div>
-                        <h1 class="ml-auto">{{name}}</h1> 
-                        <div class="mr-auto">
+                        <h1 class="ml-auto">{{name}}  
+                        <span class="btn-right">
                             <input type="checkbox" id="toggleStatus"> 
-                            <button class="btn btn-danger">Delete</button></div>
+                            <button class="btn btn-danger">Delete</button></span>
                         <div class="clear-both"></div>
+                        </h1>
                     </div>
                     <form id="putIntent" action="/" method="get">
                         <div class="">
                             <div class="form-group">
                                 <label for="intent-name">Intent Name</label>
-                                <input type="text" class="form-control" value="<%=name%>" ng-model="name" ng-init="name='<%=name%>'"name="name" placeholder="<%=name%>" >
+                                <input type="text" class="form-control" value="<%=intent.name%>" ng-model="name" ng-init="name='<%=intent.name%>'"name="name" placeholder="<%=intent.name%>" >
                             </div>
-
-                            <div class="form-group">
+                             <div class="form-group">
                                 <label for="intent-description">Associated Department</label>
-                                <select class="form-control" ng-model="department" name="department" ng-init="department='<%=department%>'" value="<%=department%>">
-                                    <option><%=department%></option>
-                                    <option>HR</option>
+                                <select class="form-control" ng-model="department" name="department" ng-init="department='<%=intent.department%>'" value="<%=department%>">
+                                <% let x=1,y=0;
+                                    for(let i=0; i<departments.length; i++){
+                                        if(intent.department == departments[i]._id){%>
+                                    <option selected value="<%=departments[i]._id%>"><%=departments[i].friendlyName%></option>
+                                           <% }else if(x==y){%>
+                                    <option value="<%=departments[i]._id%>"><%=departments[i].friendlyName%></option>
+                                <%}}%>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -55,19 +63,19 @@
                             <div class="form-group">
                                 <label for="intent-answer">Synonyms</label>
                                 <div id="synonymsList">
-                                    <% for(i=0; i<question.length; i++){ 
-                                        var syn = question[i] %>
+                                    <% for(i=0; i<intent.synonyms.length; i++){ 
+                                        var syn = intent.synonyms[i] %>
                                     <input type="text" class="form-control" class="Synonyms" placeholder="<%=syn%>" value="<%=syn%>">
                                     <% } %>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="intent-answer">Bot Answer</label>
-                                <input type="text" class="form-control" name="answer" placeholder="<%=answer%>" value="<%=answer%>">
+                                <input type="text" class="form-control" name="intnet.answer" placeholder="<%=intent.answer%>" value="<%=intent.sanswer%>">
                             </div>
                             <div class="form-group">
-                                <input readonly type="hidden" class="form-control" name="status" value="<%=id%>">
-                                <input readonly type="text" class="form-control" name="status" value="<%=status%>">
+                                <input readonly type="hidden" class="form-control" name="status" value="<%=intent._id%>">
+                                <input readonly type="text" class="form-control" name="status" value="<%=intent.disabled%>">
                             </div>
                         </div>
                         <div class="modal-footer">

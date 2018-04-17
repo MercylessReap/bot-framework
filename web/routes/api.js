@@ -6,7 +6,7 @@ var express = require('express')
   , setting = require('./database/settings')
   , team = require('./database/teams')
   , user = require('./database/users')
-  , bot = require('../../bot/app');
+  , bot = require(rootDir+'/bot/app');
   
   router.use('/department', department);
   router.use('/intent', intent);

@@ -1,7 +1,22 @@
-const express = require('express'),
-      router = express.Router(),
-      api = require(rootDir+'/lib/api');
+const express = require('express')
+    , router = express.Router()
+    , api = require(rootDir+'/lib/api')
+    , intent = require('./bot/intents')
+    , entities = require('./bot/entities')
+    , train = require('./bot/train')
+    , test = require('./bot/test');
+    
+//Department bot intents, entities and training    
+router.use('/intents/',intent);
+router.use('/entities/',entities);
+router.use('/train/',train);
+router.use('/test/',test);
 
+//Department Users, Team and logs
+router.get('/team/',(req, res) =>{res.render('pages/department/users/manage')});
+router.get('/activity-logs/',(req, res) =>{res.render('pages/department/users/activity')});
+
+//Main Department Routes
 router.post('/submit/',(req,res)=>{
     console.log('subimt sent')
     let name = req.body.name
@@ -14,13 +29,13 @@ router.post('/submit/',(req,res)=>{
     .catch((error)=>console.log(error))
 })
 router.post('/train/',(req,res)=>{
-    console.log('Publish sent')
-    api.publishLuisApp(req.body)
+    console.log('Train Request Sent')
+    api.trainLuisApp(req.body)
     .then((response)=>{
-        console.log('app published on luis')
-        return api.publishDepartment(req.body)
+        console.log('app trained on luis')
+        return api.trainDepartment(req.body)
     }).then((response)=>{
-        console.log('app successfully published')
+        console.log('app training date successfully logged to department')
     }).catch((error)=>console.log(error))
 
 })

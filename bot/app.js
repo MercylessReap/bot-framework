@@ -1,15 +1,52 @@
-var express = require('express'),
-    router = express.Router(),
-    axios = require('axios');
-var config = require('./config');
-var app = {id:'nhmZQPH28475-)]-ecscGTK',pass:'b3bba897-1433-487e-963d-8d24bf28a287'}
-var LuisModelUrl = 'https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/89b3e679-1506-4e5d-85bf-8afd5c81b702?subscription-key=fc069d5a824d4f98b3e995df1ddbcde9&staging=true'
+const express = require('express')
+    , router = express.Router()
+    , builder = require('botbuilder')
+    , axios = require('axios')
+    , bot = require(rootDir+'/lib/bot');
 
-config.loadDialog ('http://localhost',config.connector,LuisModelUrl)
-//listen for messages
-router.post('/messages', config.connector.listen());
+
+bot.start()
+function start(){
+    //Array handlers for department bots
+    const connector=[], bot = [], recognizer = [],
+          LuisModelUrl=[];
+    //
+    axios.all([axios.get('/api/setting'), axios.get('/api/department')])
+    .then(axios.spread((setting, departments)=> {
+        // Both requests are now complete
+        let luisRegion = setting.data[0].luisRegion, subKey = setting.data[0].subscriptionKey, luisState
+        
+        departments.data.forEach((item, index)=> {
+        
+            if(item.luisState === 'Staging'){luisState=true}else{luisState=false}
+            
+            LuisModelUrl[item._id] =`https://${luisRegion}.api.cognitive.microsoft.com/luis/v2.0/apps/${item.luisAppID}?subscription-key=${subKey}&staging=${luisState}`;
+            
+            connector[item._id] = new builder.ChatConnector({
+                appId: item.microsoftBotAppID,
+                appPassword: item.microsoftBotAppPass
+            });
+            
+            router.get(`/${item.name}/messages`,(req,res)=>{res.send('Hi')})
+            
+            router.post(`/${item.name}/messages`, connector[item._id].listen())
+                
+            bot[item._id] = new builder.UniversalBot(connector[item._id], (session) =>{
+                session.send('Sorry, I did not understand \'%s\'. Type \'help\' if you need assistance.', session.message.text);  
+            });
+            
+            recognizer[item._id] = new builder.LuisRecognizer(LuisModelUrl[item._id]);
+            
+            bot[item._id].recognizer(recognizer[item._id]);   
+        });
+
+    }))
+    .catch((error)=>consol.log(error)); 
+}  
 
 module.exports = router
+
+
 
 
 

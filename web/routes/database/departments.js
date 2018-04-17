@@ -91,7 +91,7 @@ router.put('/:id', (req, res, next) =>{
 })
 router.put('/:id/train/', (req, res, next) =>{
     console.log('Update department publish details');
-    department.findByIdAndUpdate(req.body.id,
+    department.findByIdAndUpdate(req.parms.id,
     {
         $set: {
             luisTrainDate: new Date,
@@ -102,7 +102,7 @@ router.put('/:id/train/', (req, res, next) =>{
     },
     (err, updateddepartment) =>{
         if(err){
-            res.send("Error updating department publish details");
+            res.send("Error updateding department training details");
         }else{
             res.json(updateddepartment);
         }
@@ -111,7 +111,7 @@ router.put('/:id/train/', (req, res, next) =>{
 })
 router.put('/:id/publish/', (req, res, next) =>{
     console.log('Update department publish details');
-    department.findByIdAndUpdate(req.body.id,
+    department.findByIdAndUpdate(req.params.id,
     {
         $set: {
             luisState: req.body.luisState, 
