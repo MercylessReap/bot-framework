@@ -29,9 +29,6 @@ router.get('/',(req,res)=>{
   .catch((error)=>console.log(error))
 })
     
-      
-
-
 router.post('/submit/',(req,res)=>{
     console.log('subimt sent')
     let name = req.body.name
@@ -43,17 +40,7 @@ router.post('/submit/',(req,res)=>{
     .then((department)=>res.redirect(`/department/${department.data._id}`))
     .catch((error)=>console.log(error))
 })
-router.post('/train/',(req,res)=>{
-    console.log('Train Request Sent')
-    api.trainLuisApp(req.body)
-    .then((response)=>{
-        console.log('app trained on luis')
-        return api.trainDepartment(req.body)
-    }).then((response)=>{
-        console.log('app training date successfully logged to department')
-    }).catch((error)=>console.log(error))
 
-})
 router.post('/publish/',(req,res)=>{
     console.log('Publish sent')
     api.publishLuisApp(req.body)
@@ -64,7 +51,8 @@ router.post('/publish/',(req,res)=>{
         console.log('app successfully published')
     }).catch((error)=>console.log(error))
 
-}) 
+})
+
 router.get('/:id',(req,res)=>{
     let config;
     api.getSettings()
@@ -77,17 +65,7 @@ router.get('/:id',(req,res)=>{
       })
     .catch((error)=>console.log(error))
 })
-router.get('/:id/delete/',(req,res)=>{
-    api.getDepartment(req.params.id)
-    .then((response)=>{
-        return api.deleteLuisApp(response.data.luisAppID)
-    })
-    .then((response)=>{
-        return api.deleteDepartment(req.params.id)
-    })
-    .then((response)=>res.send(`The ${response.data.friendlyName} Bot and setting have been successfully Deleted!!!`))
-    .catch((error)=>console.log(error))
-})
+
 router.post('/:id',(req,res)=>{
     api.getDepartment(req.params.id)
       .then((response)=>{
@@ -108,4 +86,41 @@ router.post('/:id',(req,res)=>{
       }).catch((error)=> console.log(error))
 })
 
+router.get('/:id/appStatus',(req,res)=>{
+    console.log('Check Train Status department')
+    api.getDepartment(req.params.id)
+    .then((response)=>{
+        console.log('Check Train Status on luis')
+        return api.luisTrainStatus(response.data)
+    })
+    .then((response)=>{
+        console.log('app train status is valid')
+        res.send(response.data)
+    }).catch((error)=>res.send(console.log(error)))
+
+})
+router.get('/:id/train/',(req,res)=>{
+    console.log('Train Request Sent')
+    api.getDepartment(req.params.id)
+    .then((response)=>{
+        console.log('app trained on luis')
+        return api.trainLuisApp(response.data)
+    })
+    .then((response)=>{
+        console.log('app train request is valid')
+        res.send(response.data)
+    }).catch((error)=>res.send(error.response.data))
+})
+
+router.get('/:id/delete/',(req,res)=>{
+    api.getDepartment(req.params.id)
+    .then((response)=>{
+        return api.deleteLuisApp(response.data.luisAppID)
+    })
+    .then((response)=>{
+        return api.deleteDepartment(req.params.id)
+    })
+    .then((response)=>res.send(`The ${response.data.friendlyName} Bot and setting have been successfully Deleted!!!`))
+    .catch((error)=>console.log(error))
+})
 module.exports = router

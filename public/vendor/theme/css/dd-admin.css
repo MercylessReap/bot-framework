@@ -590,3 +590,6 @@ html {
   .slider.round:before {
     border-radius: 50%;
   }
+  .form-control.inputUtt {
+    border: 0px;
+}
