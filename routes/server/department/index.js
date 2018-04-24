@@ -48,6 +48,7 @@ router.post('/publish/',(req,res)=>{
         console.log('app published on luis')
         return api.publishDepartment(req.body)
     }).then((response)=>{
+        res.redirect(req.get('referer'))
         console.log('app successfully published')
     }).catch((error)=>console.log(error))
 
@@ -82,7 +83,8 @@ router.post('/:id',(req,res)=>{
             return api.putDepartment(req.body)
         }
       }).then((reponse)=>{
-
+        console.log('department successfully updated')
+        res.redirect(req.get('referer'))
       }).catch((error)=> console.log(error))
 })
 

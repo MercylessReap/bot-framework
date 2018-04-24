@@ -50,19 +50,26 @@ router.post('/',(req, res) =>{
 
 })
 
-router.get('/:e/',(req, res) =>{
-  let departments
+router.get('/:id/',(req, res) =>{
+  let departments, intent
   api.getDepartments()
   .then((response)=>{
     departments=response.data
-    return api.getIntent(req.params.e)
+    return api.getIntent(req.params.id)
+  }).then((response)=>{
+    intent = response.data
+    for(let i=0; i<departments.length; i++){
+      if(intent.department == departments[i]._id){
+        return api.getLuisIntentUtterance(departments[i])
+      }
+    }
   }).then((response)=>{
     console.log(response.data);
     res.render('pages/department/bot/intents/view',{  
-      title: `Intents - ${response.data.name} | Dimension Data Bot Portal`,
-      intent:response.data,
+      title: `Intents - ${intent.friendlyName} | Dimension Data Bot Portal`,
+      intent:intent,
       departments:departments,
-
+      utterance: response.data
     })
   }).catch((error) => console.log(error));  
   

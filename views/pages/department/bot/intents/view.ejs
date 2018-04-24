@@ -66,7 +66,7 @@
                 <label for="intent-answer">New Utterance</label>
                 <div id="synonymsList">
 
-                  <input type="text" class="form-control" class="Synonyms" placeholder="" value="">
+                  <input type="text" class="form-control" class="Synonyms" placeholder="Please enter a new utterance and press enter" value="">
 
                 </div>
               </div>
@@ -78,9 +78,13 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td><div class="input-group"><input type="text" class="form-control inputUtt" value="Hello How are you?"><div class="input-group-append"><button class="btn btn-outline-info">Update</button> <button class="btn btn-outline-danger">Delete</button></div></div></td>
-                  </tr>
+                  <% for(let i=0; i<utterance.length; i++){ 
+                    if(utterance[i].intentLabel == intent.name){%>
+                    <tr>
+                      <td><div class="input-group"><input type="text" class="form-control inputUtt" placeholder="<%=utterance[i].text%>" value="<%=utterance[i].text%>"><div class="input-group-append"><button class="btn btn-outline-info" onclick="updateUtt('<%=utterance[i].id%>')">Update</button> <button class="btn btn-outline-danger" onclick="deleteUtt('<%=utterance[i].id%>')">Delete</button></div></div></td>
+                    </tr>
+                  <%}}%>
+                  
                 </tbody>
               </table>
               <div class="form-group">
