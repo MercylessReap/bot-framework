@@ -121,14 +121,28 @@ router.post('/:id/',(req, res) =>{
       console.log('updating intent on luis')
       return api.putLuisIntent(oldDepartment,oldIntent.luisId,req.body.name)
       .then((response)=>{
-        return api.putIntent(req.body)
+        if(req.body.newUtt !== ''){
+          return api.postLuisIntentUtterance(oldDepartment,req.body)
+          .then((response)=>{
+            return api.putIntent(req.body)
+          })
+        } else{
+          return api.putIntent(req.body)
+        }
       })
     }else{
-      return api.putIntent(req.body)
+      if(req.body.newUtt !== ''){
+        return api.postLuisIntentUtterance(oldDepartment, req.body)
+        .then((response)=>{
+          return api.putIntent(req.body)
+        })
+      } else{
+        return api.putIntent(req.body)
+      }
     }
   })
   .then((response)=>{
-    res.send('Intent '+req.body.name+' updated')
+    res.redirect(req.get('referer'))
   }).catch((error)=>res.send(error.response.data))
   
 });

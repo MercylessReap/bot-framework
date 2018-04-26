@@ -52,7 +52,7 @@
                   <select class="form-control" name="department">
                     <% for(let i=0; i<departments.length; i++){
                         if(intent.department == departments[i]._id){ %>
-                        <option value="<%=departments[i]._id%>">
+                        <option selected value="<%=departments[i]._id%>">
                             <%=departments[i].friendlyName%>
                         </option>
                     <% }else if(perm.wizard==true){%>
@@ -63,12 +63,8 @@
                   </select>
               </div>
               <div class="form-group">
-                <label for="intent-answer">New Utterance</label>
-                <div id="synonymsList">
-
-                  <input type="text" class="form-control" class="Synonyms" placeholder="Please enter a new utterance and press enter" value="">
-
-                </div>
+                <label for="intent-utterance">New Utterance</label>
+                <input type="text" class="form-control" id="intent-utterance" placeholder="Please enter a new utterance and press enter" value="" name="newUtt">
               </div>
 
               <table class="table">
@@ -109,9 +105,27 @@
 <% include ../../../../partials/footer %>
 <script>
     let intentState = document.getElementsByName('disabled')[0],
-    bool = strToBool(intentState.value)
+    bool = strToBool(intentState.value),
+    newUtt = document.getElementById('intent-utterance')
     disabledStatus(bool)
-    
+
+  var utt = document.getElementByName('newUtt')[0].value, 
+		intentname = document.getElementByName('name')[0].value,
+    url = 'https://westus.api.cognitive.microsoft.com/luis/api/v2.0/apps/89b3e679-1506-4e5d-85bf-8afd5c81b702/versions/0.1/examples'
+
+var xhr = new XMLHttpRequest();
+xhr.open("POST", url, true);
+
+//Send the proper header information along with the request
+xhr.setRequestHeader("Content-type", "application/json");
+xmlhttp.setRequestHeader("Ocp-Apim-Subscription-Key"," fc069d5a824d4f98b3e995df1ddbcde9")
+xhr.onreadystatechange = function() {//Call a function when the state changes.
+    if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200) {
+        // Request finished. Do processing here.
+    }
+}
+xhr.send({'text':utt,'intentName':intentname});
+
   function toggleDisabled(){
     bool = !bool;
     intentState.value=bool

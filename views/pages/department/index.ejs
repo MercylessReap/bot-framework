@@ -26,7 +26,7 @@
         <div class="col-12">
           <h1><%=data.friendlyName%> 
             <span class="btn-right">
-              <button id="trainBtn" title="" class="btn btn-md btn-info"><i id="train-status" class="fa "></i> Train</button>
+              <button id="trainBtn" title="" data-toggle="modal" data-target=".bd-train-modal" class="btn btn-md btn-info"><i id="train-status" class="fa "></i> Train</button>
               <button type="button" data-toggle="modal" data-target=".bd-publish-modal-lg" class="btn btn-md btn-success">Publish</button>
               <button type="button" data-toggle="modal" data-target=".bd-delete-modal" class="btn btn-md btn-danger">Delete</button>
             </span>
@@ -53,9 +53,9 @@
                 <input required type="text" class="form-control" id="botName" name="botName" value="<%=botNameValue%>" placeholder="<%=botName%>">
               </div>
               <div class="form-group col-md-5">
-                <label for="microsoftAppID">Microsoft Bot App ID</label>
-                <% if(data.microsoftBotAppID ===''){var microsoftBotAppID = 'Please enter Microsoft App ID...',microsoftBotAppIDValue=''}else{microsoftBotAppID=microsoftBotAppIDValue=data.microsoftBotAppID}%>
-                <input required type="text" class="form-control" id="microsoftAppID" name="microsoftAppID" value="<%=microsoftBotAppIDValue%>" placeholder="<%=microsoftBotAppID%>">
+                <label for="microsoftAppId">Microsoft Bot App ID</label>
+                <% if(data.microsoftBotAppId ===''){var microsoftBotAppId = 'Please enter Microsoft App ID...',microsoftBotAppIdValue=''}else{microsoftBotAppId=microsoftBotAppIdValue=data.microsoftBotAppId}%>
+                <input required type="text" class="form-control" id="microsoftAppId" name="microsoftAppId" value="<%=microsoftBotAppIdValue%>" placeholder="<%=microsoftBotAppId%>">
               </div>
               <div class="form-group col-md-5">
                 <label for="microsoftAppPass">Microsoft Bot App Password</label>
@@ -72,8 +72,8 @@
               </div>
               <div class="form-group col-md-6">
                 <label for="analytics">Analytics</label>
-                <% if(data.analyticsID ===''){var analytics = 'Please enter Microsoft Bot App Password...',analyticsValue=''}else{analytics=analyticsValue=data.analyticsID}%>
-                <input type="text" class="form-control" id="analytics" name="analyticsID" value="<%=analyticsValue%>"placeholder="<%=analytics%>">
+                <% if(data.analyticsId ===''){var analytics = 'Please enter Microsoft Bot App Password...',analyticsValue=''}else{analytics=analyticsValue=data.analyticsId}%>
+                <input type="text" class="form-control" id="analytics" name="analyticsId" value="<%=analyticsValue%>"placeholder="<%=analytics%>">
               </div>
             </div>
             <div class="form-row">
@@ -82,8 +82,8 @@
                 <input required readonly type="text" class="form-control-plaintext" id="luisName" name="name" value="<%=data.name%>" placeholder="<%=data.name%>">
               </div>
               <div class="form-group col-md-5">
-                <label for="luisAppID">LUIS App ID</label>
-                <input required readonly type="text" class="form-control-plaintext" id="luisAppID" name="luisAppID" value="<%=data.luisAppID%>" placeholder="<%=data.luisAppID%>">
+                <label for="luisAppId">LUIS App ID</label>
+                <input required readonly type="text" class="form-control-plaintext" id="luisAppId" name="luisAppId" value="<%=data.luisAppId%>" placeholder="<%=data.luisAppId%>">
               </div>
               <div class="form-group col-md-1">
                 <label for="luisAppPass">App Ver</label>
@@ -96,7 +96,7 @@
               </div>
             </div>    
             <div class="form-group">
-              <input type="hidden" class="form-control" name="appid" value="<%=data.luisAppID%>">
+              <input type="hidden" class="form-control" name="appid" value="<%=data.luisAppId%>">
               <input type="hidden" class="form-control" name="id" value="<%=data._id%>">
             </div>
             <div class="form-group">
@@ -108,37 +108,16 @@
     </div>
     <!-- /.container-fluid-->
     <!-- /.content-wrapper-->
-    <div class="modal fade bd-publish-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <% include publish %>
-        </div>
-      </div>
-    </div>
+
+    <% include train-modal %>
+
+    <% include publish %>
+       
     <% include ./delete %>
 <% include ../../partials/footer %>
 <script>
     var botEnd = document.getElementById('deptInfo');
         botEnd.innerHTML= botEnd.innerHTML +' '+ botMesageEndpoint()
-        trainStatus()
-  function trainStatus(array){
-    let trainStatus = document.getElementById('train-status'),
-        trainBtn = document.getElementById('trainBtn'),
-        y=x=0
-    if(y==x){
-      trainBtn.title="Bot training is up to date"
-      trainBtn.classList.remove('btn-info')
-      trainBtn.classList.add('btn-secondary')
-      trainStatus.classList.add('fa-check')
-      trainStatus.classList.add('text-success')
-      }else{
-        trainBtn.title="Bot needs training!!!"
-        trainBtn.classList.remove('btn-info')
-        trainBtn.classList.add('btn-warning')
-        trainStatus.classList.add('fa-exclamation')
-        trainStatus.classList.add('text-danger')
-        }
-  }
   function botMesageEndpoint(){
     let host = window.location.protocol+'//'+window.location.hostname;
     let botUrl = host + '/api/v1/'+document.getElementById('luisName').value+'/messages';
