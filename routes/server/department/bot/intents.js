@@ -146,5 +146,23 @@ router.post('/:id/',(req, res) =>{
   }).catch((error)=>res.send(error.response.data))
   
 });
+router.post('/:id/utt',(req, res) =>{
+  console.log('update intent utterance sent')
+  console.log(req.body)
+  let department
+  api.getDepartment(req.body.department)
+  .then((response)=>{department = response.data;return api.deleteLuisIntentUtterance(department, req.body.id)})
+  .then((response)=>{ return api.postLuisIntentUtterance(department, req.body.utt)})
+  .then((response)=>{console.log(response.data);res.send('Utterance Updated')})
+  .catch((error)=>res.send(error.response))
+});
 
+router.delete('/:id/utt',(req, res) =>{
+  console.log('delete intent utterance sent')
+  console.log(req.body)
+  api.getDepartment(req.body.department)
+  .then((response)=>{return api.deleteLuisIntentUtterance(response.data, req.body.id)})
+  .then((response)=>{console.log(response.data);res.send('Utterance Deleted')})
+  .catch((error)=>res.send(error.response))
+});
 module.exports = router

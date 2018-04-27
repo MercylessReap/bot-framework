@@ -36,9 +36,9 @@ router.post('/submit/',(req,res)=>{
     .then((luis)=>{
         console.log('luis response is good')
         console.log(luis.data)
-        return  api.postDepartment(req.body, luis.data) })
+        return api.postDepartment(req.body, luis.data) })
     .then((department)=>res.redirect(`/department/${department.data._id}`))
-    .catch((error)=>console.log(error))
+    .catch((error)=>res.send(error.response.data))
 })
 
 router.post('/publish/',(req,res)=>{
@@ -55,13 +55,15 @@ router.post('/publish/',(req,res)=>{
 })
 
 router.get('/:id',(req,res)=>{
-    let config;
+    let config, intents;
     api.getSettings()
-      .then((setting) => {config = setting.data[0];return api.getDepartment(req.params.id)})
+      .then((setting) => {config = setting.data[0];return api.getIntents()})
+      .then((intent)=>{ intents=intent.data; return api.getDepartment(req.params.id)})
       .then((response)=>{
           res.render('./pages/department/index',{
             title:response.data.friendlyName+' - Dimension Data Bot Portal',
-            data:response.data,config:config
+            data:response.data,config:config,
+            dataIntents:intents
           })
       })
     .catch((error)=>console.log(error))
@@ -74,7 +76,7 @@ router.post('/:id',(req,res)=>{
        if (req.body.friendlyName !== response.data.friendlyName){
             console.log('updating on luis')
             let name = req.body.friendlyName
-            return api.putLuisApp(name, req.body.luisAppID)
+            return api.putLuisApp(name, req.body.luisAppId)
             .then((response)=>{
                 return api.putDepartment(req.body)
             })
@@ -87,6 +89,13 @@ router.post('/:id',(req,res)=>{
         res.redirect(req.get('referer'))
       }).catch((error)=> console.log(error))
 })
+router.get('/:id/intents',(req,res)=>{
+    console.log('get them intents')
+    api.getDepartment(req.params.id)
+      .then((app) => {return api.getLuisAppIntents(app.data)})
+      .then((response)=> res.send(response.data))
+    .catch((error)=>res.send(error.response.data))
+})
 
 router.get('/:id/appStatus',(req,res)=>{
     console.log('Check Train Status department')
@@ -98,7 +107,7 @@ router.get('/:id/appStatus',(req,res)=>{
     .then((response)=>{
         console.log('app train status is valid')
         res.send(response.data)
-    }).catch((error)=>res.send(console.log(error)))
+    }).catch((error)=>res.send(error.response.data))
 
 })
 router.get('/:id/train/',(req,res)=>{

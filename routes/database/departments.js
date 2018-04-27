@@ -41,13 +41,13 @@ router.post('/', (req, res, next) =>{
     var newdepartment = new department();
     newdepartment.friendlyName = req.body.friendlyName;
     newdepartment.name = req.body.name;
-    newdepartment.sparkAccessToken = req.body.accessToken;
-    newdepartment.microsoftBotAppID = req.body.appID;
+    newdepartment.sparkAccessToken = req.body.sparkAccessToken;
+    newdepartment.microsoftBotAppID = req.body.appId;
     newdepartment.microsoftBotAppPass = req.body.appPass;
-    newdepartment.luisAppId = req.body.luisAppID;
+    newdepartment.luisAppId = req.body.luisAppId;
     newdepartment.luisAppVer = req.body.luisAppVer;
     newdepartment.luisState = req.body.luisState;
-    newdepartment.analyticsId = req.body.analyticsID;
+    newdepartment.analyticsId = req.body.analyticsId;
     newdepartment.confluence = req.body.confluence;
     newdepartment.botName = req.body.botName;
     newdepartment.created = new Date;
@@ -68,10 +68,10 @@ router.put('/:id', (req, res, next) =>{
         $set: {
             friendlyName: req.body.friendlyName,
             name: req.body.name,
-            sparkAccessToken: req.body.accessToken,
-            microsoftBotAppId: req.body.appID,
+            sparkAccessToken: req.body.sparkAccessToken,
+            microsoftBotAppId: req.body.appId,
             microsoftBotAppPass: req.body.appPass,
-            analyticsId: req.body.analyticsID,
+            analyticsId: req.body.analyticsId,
             confluence: req.body.confluence,
             botName: req.body.botName,
             updated: new Date

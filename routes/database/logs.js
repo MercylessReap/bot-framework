@@ -37,8 +37,8 @@ router.get('/:id', (req, res, next) => {
 router.post('/', (req, res, next) => {
     console.log('Post a log');
     var newlog = new log();
-    newlog.userId = req.body.userID;
-    newlog.typeId = req.body.typeID;
+    newlog.userId = req.body.userId;
+    newlog.typeId = req.body.typeId;
     newlog.type = req.body.type;
     newlog.info = req.body.info;
     newlog.created = new Date;

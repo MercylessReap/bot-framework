@@ -27,8 +27,21 @@
     </div>
 </div>
 <script>
+let intents;
+function loadIntents() {
+    var luisUrl = window.location.toString()+"/intents/",
+        intentReq = new XMLHttpRequest();
+    intentReq.addEventListener("load", holdIntents(this.responseText));
+    intentReq.open("GET", luisUrl);
+    intentReq.send();
+}
+function holdIntents(i){
+  intents = JSON.parse(i)
+}
 function reqListener () {
   console.log(this.responseText)
+  loadIntents()
+  console.log(intents)
   if(this.responseText !== ""){
     
     let failed = false, 
@@ -36,34 +49,38 @@ function reqListener () {
         trainTable = document.getElementById('train-list'),
         trainList = trainTable.innerHTML
     if(typeof luisTrainStatus.error !== 'undefined'){
-        alert(luisTrainStatus.error.message)
+        spawnNotification(luisTrainStatus.error.message,'','Training Error')
     }else if(typeof luisTrainStatus.status !== 'undefined'){
-        alert(luisTrainStatus.status)
+        spawnNotification(luisTrainStatus.status,'','Training Status')
     }else{
+        failed = false
         for(let i=0; i< luisTrainStatus.length; i++){
-        if(luisTrainStatus[i].details.status === "Fail"){
+          if(luisTrainStatus[i].details.status === "Fail"){
             console.log(luisTrainStatus[i].modelId)
             console.log(luisTrainStatus[i].details.status)
             console.log(luisTrainStatus[i].details.failureReason)
-            trainList = trainList+'<tr><td>'+luisTrainStatus[i].modelId+'</td>'+'<td>'+luisTrainStatus[i].details.status+'</td>'+'<td>N/A</td></tr>'
+            trainList = trainList+'<tr><td>'+luisTrainStatus[i].modelId+'</td>'+'<td>'+luisTrainStatus[i].details.status+'</td>'+'<td>'+luisTrainStatus[i].details.failureReason+'</td></tr>'
             trainTable.innerHTML = trainList
             failed = true
-            trainStatus(failed)
+          }
         }
-        if(luisTrainStatus[i].details.status === "Success"){
-            console.log(luisTrainStatus[i].modelId)
-            console.log(luisTrainStatus[i].details.status)
-            trainList = trainList+'<tr><td>'+luisTrainStatus[i].modelId+'</td>'+'<td>'+luisTrainStatus[i].details.status+'</td>'+'<td>N/A</td></tr>'
-            trainTable.innerHTML = trainList
-            failed = false
-            trainStatus(failed)
+        if(failed !==true){
+          for(let i=0; i< luisTrainStatus.length; i++){
+            if(luisTrainStatus[i].details.status === "Success"){
+                console.log(luisTrainStatus[i].modelId)
+                console.log(luisTrainStatus[i].details.status)
+                trainList = trainList+'<tr><td>'+luisTrainStatus[i].modelId+'</td>'+'<td>'+luisTrainStatus[i].details.status+'</td>'+'<td>N/A</td></tr>'
+                trainTable.innerHTML = trainList
+                failed = false
+            }
+          }
         }
-        
-        }
+        trainStatus(failed)
     }
   }else{
         console.log('App needs to train first')
         trainModel()
+        location.reload()
   }
 }
 
@@ -84,10 +101,12 @@ function trainStatus(failed){
         trainBtn.classList.add('btn-warning')
         trainStatus.classList.add('fa-exclamation')
         trainStatus.classList.add('text-danger')
-        trainP.innerHTML = "Department training Failed! <span class='btn-right'><button class='btn btn-info' onclick = 'trainModel()'>Train Department</button></span>"
+        trainP.innerHTML = "Department training Failed! <span class='btn-right'><button class='btn btn-info' onclick = 'trainModel()'>Train Department</button></span> <p> FewLabels = Not enough Utterances for practical use!</p>"
+        spawnNotification('Department training Failed!','','Bot needs training!!!')
       }
       document.getElementById('train-table').classList.add('table')
 }
+
 function trainModel(){
     let url = window.location.toString()+"/train"
     var trainReq = new XMLHttpRequest();
@@ -95,9 +114,12 @@ function trainModel(){
     trainReq.open("GET", url);
     trainReq.send();
 }
+
 var url = window.location.toString()+"/appstatus"
 var oReq = new XMLHttpRequest();
 oReq.addEventListener("load", reqListener);
 oReq.open("GET", url);
 oReq.send();
+
+
 </script>

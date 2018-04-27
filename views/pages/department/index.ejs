@@ -67,8 +67,8 @@
             <div class="form-row">
               <div class="form-group col-md-6">
                 <label for="sparkAccessToken">Cisco Spark Acess Token</label>
-                <% if(data.sparkAccessToken ===''){var sparkAccessToken = 'Please enter Microsoft Bot App Password...',sparkAccessTokenValue=''}else{sparkAccessToken=sparkAccessTokenValue=data.sparkAccessToken}%>
-                <input type="text" class="form-control" id="sparkAccessToken" name="sparkAccessToken" value="<%=sparkAccessTokenValue%>" placeholder="<%=sparkAccessToken%>">
+                <% if(data.sparkAccessToken ===""){var sparkAccessToken = 'Please enter Microsoft Bot App Password...',sparkAccessTokenValue=''}else{sparkAccessToken=sparkAccessTokenValue=data.sparkAccessToken}%>
+                <input type="text" class="form-control" id="sparkAccessToken" name="sparkAccessToken" placeholder="<%=sparkAccessToken%>" value="<%=sparkAccessTokenValue%>">
               </div>
               <div class="form-group col-md-6">
                 <label for="analytics">Analytics</label>

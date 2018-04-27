@@ -38,7 +38,7 @@ router.get('/:id', (req, res, next) => {
 router.post('/', (req, res, next) =>{
     console.log('Post a intent');
     var newintent = new intent();
-    newintent.luisId=req.body.luisID;
+    newintent.luisId=req.body.luisId;
     newintent.name = req.body.name.replace(/\s/g, '');
     newintent.frienlyName = req.body.name;
     newintent.synonyms = req.body.synonyms
