@@ -6,7 +6,7 @@ const express = require('express')
     , log = require('./database/logs')
     , setting = require('./database/settings')
     , permission = require('./database/permissions')
-    , user = require('./database/users');
+    , user = require('./database/users')
   
   router.use('/department', department);
   router.use('/intent', intent);

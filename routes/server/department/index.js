@@ -50,7 +50,7 @@ router.post('/publish/',(req,res)=>{
     }).then((response)=>{
         res.redirect(req.get('referer'))
         console.log('app successfully published')
-    }).catch((error)=>console.log(error))
+    }).catch((error)=>res.send(error.response.data))
 
 })
 
@@ -66,7 +66,7 @@ router.get('/:id',(req,res)=>{
             dataIntents:intents
           })
       })
-    .catch((error)=>console.log(error))
+    .catch((error)=>res.send(error.response.data))
 })
 
 router.post('/:id',(req,res)=>{
@@ -126,12 +126,12 @@ router.get('/:id/train/',(req,res)=>{
 router.get('/:id/delete/',(req,res)=>{
     api.getDepartment(req.params.id)
     .then((response)=>{
-        return api.deleteLuisApp(response.data.luisAppID)
+        return api.deleteLuisApp(response.data.luisAppId)
     })
     .then((response)=>{
         return api.deleteDepartment(req.params.id)
     })
     .then((response)=>res.send(`The ${response.data.friendlyName} Bot and setting have been successfully Deleted!!!`))
-    .catch((error)=>console.log(error))
+    .catch((error)=>res.send(error.response.data))
 })
 module.exports = router
