@@ -120,7 +120,7 @@
         botEnd.innerHTML= botEnd.innerHTML +' '+ botMesageEndpoint()
   function botMesageEndpoint(){
     let host = window.location.protocol+'//'+window.location.hostname;
-    let botUrl = host + '/api/v1/'+document.getElementById('luisName').value+'/messages';
+    let botUrl = host + '/bot/'+document.getElementById('luisName').value+'/messages';
     return botUrl
   }
 </script>

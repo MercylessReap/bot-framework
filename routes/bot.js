@@ -5,7 +5,7 @@ const express = require('express'),
 botController.start(router)
 
 router.post('/dynamic', function(req,res) {
-    botController.init(router);
+    botController.start(router);
     res.status(200).send('reload routes');
 });
 
