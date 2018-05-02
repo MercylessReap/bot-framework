@@ -14,7 +14,7 @@ router.get('/',(req, res) =>{
     return api.getIntents()
   })
   .then((response) => {
-    res.render('pages/department/bot/intents/index',{
+    res.render('pages/department/intents/index',{
       title: "Intents | Dimension Data Bot Portal",
       intentsData:response.data,
       departments:departments
@@ -65,7 +65,7 @@ router.get('/:id/',(req, res) =>{
     }
   }).then((response)=>{
     console.log(response.data);
-    res.render('pages/department/bot/intents/view',{  
+    res.render('pages/department/intents/view',{  
       title: `Intents - ${intent.friendlyName} | Dimension Data Bot Portal`,
       intent:intent,
       departments:departments,

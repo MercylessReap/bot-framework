@@ -44,7 +44,7 @@
                         </thead>
                         <tbody id="intentList">
                             <% for(i=0; i< intentsData.length; i++) { 
-                                if(perm.wizard == true){ %>
+                                if(user.perm.wizard == true){ %>
                                 <tr>
                             <% var id = intentsData[i]._id.toString(),
                                   disabled;

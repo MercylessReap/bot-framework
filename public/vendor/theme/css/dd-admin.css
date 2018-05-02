@@ -2,7 +2,9 @@ html {
     position: relative;
     min-height: 100%;
   }
-  
+  .display-none{
+    display:none
+  }
   body {
     overflow-x: hidden;
   }
@@ -20,7 +22,9 @@ html {
   body.fixed-nav {
     padding-top: 56px;
   }
-  
+  .dash-padding {
+    padding: 20px;
+  }
   .content-wrapper {
     min-height: calc(100vh - 56px);
     padding: 1rem 0 2rem 0;

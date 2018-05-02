@@ -19,11 +19,16 @@ router.get('/activity-logs/',(req, res) =>{res.render('pages/department/users/ac
 //Main Department Routes
 //everyone department member can see
 router.get('/',(req,res)=>{
-    api.getDepartment(user.department)
+    let intents;
+    api.getIntents()
+    .then((response)=>{
+        intents=response.data
+        return api.getDepartment(user.department)})
     .then((response)=>{
         res.render('./pages/department/view',{
           title:response.data.friendlyName+' - Dimension Data Bot Portal',
-          data:response.data,user:user,perm:perm
+          data:response.data,
+          intents:intents
         })
     })
   .catch((error)=>console.log(error))

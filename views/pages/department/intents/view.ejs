@@ -55,7 +55,7 @@
                         <option selected value="<%=departments[i]._id%>">
                             <%=departments[i].friendlyName%>
                         </option>
-                    <% }else if(perm.wizard==true){%>
+                    <% }else if(user.perm.wizard==true){%>
                         <option value="<%=departments[i]._id%>">
                             <%=departments[i].friendlyName%>
                         </option>

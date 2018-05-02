@@ -1,3 +1,4 @@
+
 <form id="newIntent" action="/department/intents/" method="post">
     <div class="modal-header">
         <h5 class="modal-title">Add Intent</h5>
@@ -14,12 +15,15 @@
         <div class="form-group">
             <label for="intent-description">Department</label>
             <select class="form-control" name="department">
+            <% if(typeof departments !== 'undefined'){%>
             <%  for(let i=0; i<departments.length; i++){
                     if(user.department == departments[i]._id){%>
                 <option selected value="<%=departments[i]._id%>"><%=departments[i].friendlyName%></option>
-            <% }else if(perm.wizard==true){%>
+            <% }else if(user.perm.wizard==true){%>
                 <option value="<%=departments[i]._id%>"><%=departments[i].friendlyName%></option>
-            <%}}%>
+            <%}}}else{%>
+                <option selected value="<%=data._id%>"><%=data.friendlyName%></option>
+            <%}%>
             </select>
         </div>
       

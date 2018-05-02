@@ -21,7 +21,7 @@
           </a>
           <ul class="sidenav-second-level collapse" id="navUsers">
             <li>
-              <a href="/department/">My Department</a>
+              <a href="/department/"><%=user.departmentName%></a>
             </li>
             <li>
               <a href="/department/test/">Test Bot</a>
@@ -29,7 +29,7 @@
 
           </ul>
         </li>
-        <% if(perm.wizard === true){%>
+        <% if(user.perm.wizard === true){%>
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Bot Growth">
           <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#navBot" data-parent="#sideNav">
             <i class="fa fa-fw fa-wrench"></i>
@@ -63,7 +63,7 @@
         </li>
       </ul>
       <ul class="navbar-nav ml-auto">
-        <% if(perm.wizard === true){ %>
+        <% if(user.perm.wizard === true){ %>
         <li class="nav-item">
           <a class="nav-link" href="/config/">
             <i class="fa fa-fw fa-cog"></i>Config</a>

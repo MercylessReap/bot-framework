@@ -66,7 +66,8 @@ function reqListener () {
         if(failed !==true){
           for(let i=0; i< luisTrainStatus.length; i++){
             if(luisTrainStatus[i].details.status === "Success"){
-                console.log(luisTrainStatus[i].modelId)
+                
+                console.log(findIntentName(luisTrainStatus[i].modelId))
                 console.log(luisTrainStatus[i].details.status)
                 trainList = trainList+'<tr><td>'+luisTrainStatus[i].modelId+'</td>'+'<td>'+luisTrainStatus[i].details.status+'</td>'+'<td>N/A</td></tr>'
                 trainTable.innerHTML = trainList
@@ -114,6 +115,24 @@ function trainModel(){
     trainReq.send();
 }
 
+function findIntentName(id){
+  let intentName;
+  var url = window.location.toString()+"/intents"
+  let intentNameReq = new XMLHttpRequest();
+  intentName.addEventListener("load", intentLoop(id));
+  intentName.open("GET", url);
+  intentName.send();
+}
+function intentLoop(id){
+  console.log(this.responseText)
+  for(let i=0; i< this.responseText[i]; i++){
+    if(this.responseText[i].id == id){
+      return this.responseText[i].name
+    }else{
+      return 'None'
+    }
+  }
+}
 var url = window.location.toString()+"/appstatus"
 var oReq = new XMLHttpRequest();
 oReq.addEventListener("load", reqListener);

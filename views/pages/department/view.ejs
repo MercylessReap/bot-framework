@@ -24,10 +24,12 @@
       </ol>
       <div class="row">
         <div class="col-12">
-          <h1><%=data.friendlyName%> 
+          <h1><%=data.friendlyName%>
+          <% if(user.perm.admin == true ||user.perm.wizard == true ){ %>
             <span class="btn-right">
-              <button id="editBtn" title="" class="btn btn-md btn-info"><i id="train-status" class="fa "></i> Edit (only admin)</button>
+              <button id="editBtn" title="" class="btn btn-md btn-info"><i id="train-status" class="fa "></i> Edit </button>
             </span>
+          <% } %>
           </h1>
           <p id="deptInfo">Here you can view the details for the departments bot.</p>
         </div>
@@ -58,24 +60,74 @@
             <li class="nav-item">
               <a class="nav-link" id="pills-team-tab" data-toggle="pill" href="#pills-team" role="tab" aria-controls="pills-team" aria-selected="false">Team</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item display-none">
               <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">Logs</a>
             </li>
           </ul>
           <div class="container-fluid">
           <div class="tab-content" id="pills-tabContent">
             <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-                <p><a class="btn btn-success" href="/department/intents/">Manage Intents</a></p>
+                 <div class="col-12">
+                    <h1>Intents
+                        <span class="btn-right">
+                            <button type="button" data-toggle="modal" data-target=".bd-example-modal-lg" class="btn btn-md btn-success">Add Intent</button>
+                        </span>
+                    </h1>
+                    <p>This is you can view existing questions the bot can answer, update them or create new ones.</p>
+                </div>
+                <div class="col-12">
+
+                    <table id="tiTable" class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Department</th>
+                                <th scope="col">Updated</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="intentList">
+                            <% for(i=0; i< intents.length; i++) { 
+                                if(intents[i].department == user.department){ %>
+                                                                <tr>
+                            <% let id = intents[i]._id.toString(),
+                                  disabled;
+                              if (intents[i].diasbled == "true") {disabled = 'Disabled'} else { disabled = 'Enabled'}
+                              let count = i+1;
+                              let b = intents[i].updated.split(/\D+/),
+                                  c = intents[i].created.split(/\D+/),
+                                  updated = new Date(Date.UTC(b[0], --b[1], b[2], b[3], b[4], b[5], b[6])),
+                                  created = new Date(Date.UTC(b[0], --c[1], c[2], c[3], c[4], c[5], c[6]))
+
+                              %>
+                              
+                              <th scope='row'><%=count%></th>
+                              <td><%= intents[i].name %></td>
+                              <td><%= data.friendlyName %></td>
+                              <td><%= updated%></td>
+                              <td><%=disabled %></td>
+                              <td><a class="btn btn-primary" href="/department/intents/<%= id %>">View</a> <span class="btn-right"><button class="btn btn-danger" onclick="deleteintent('<%= id %>')">Delete</button></span></td>
+                              </tr>
+                            <% }} %>
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <div class="tab-pane fade" id="pills-team" role="tabpanel" aria-labelledby="pills-team-tab">
+              <% if(user.perm.admin == true || user.perm.wizard == true){ %>
               <p>So <%=user.name%> I see you want to <a class="btn btn-success" title="You smart, click here to sort this team out" href="/department/users/">Manage the Team</a> I think you know what to do ;)</p>
+              <% }else{ %>
+              <p>Hey <%=user.name%>, See your team below </p>
+              <% } %>
               <table id="tiTable" class="table table-hover">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Name</th>
                         <th scope="col">Created</th>
-                        <th scope="col">Team Leader</th>
+                        <th scope="col">Admin</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -144,6 +196,13 @@
           </div>
         </div>
       </div>
+    </div>
+    <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <% include ./intents/add %>
+            </div>
+        </div>
     </div>
     <!-- /.container-fluid-->
     <!-- /.content-wrapper-->

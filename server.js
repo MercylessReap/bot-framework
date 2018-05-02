@@ -3,7 +3,7 @@ const express = require('express')
     , path = require('path')
       global.rootDir = path.resolve(__dirname);
       //test for locking down app
-      global.user ={name:'Swaye Chateau',department:'5abea0315abfbb0b50afdc0e'}, global.perm={wizard:true}
+      global.user ={name:'Swaye Chateau',department:'5abea0315abfbb0b50afdc0e', departmentName:"Test Department",perm:{admin:false, wizard:false}}
     , index = require('./routes/webserver')
     , api = require('./routes/api')
     , bot = require('./routes/bot')
