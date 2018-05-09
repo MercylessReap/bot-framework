@@ -32,13 +32,16 @@
               <a class="nav-link" id="department-tab" data-toggle="pill" href="#department" role="tab" aria-controls="department" aria-selected="false">Department Setup</a>
             </li>
             <li class="nav-item">
+              <a class="nav-link" id="logs-tab" data-toggle="pill" href="#users" role="tab" aria-controls="users" aria-selected="false">Users</a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link" id="logs-tab" data-toggle="pill" href="#logs" role="tab" aria-controls="logs" aria-selected="false">System Logs</a>
             </li>
           </ul>
           <div class="tab-content container-fluid" id="pills-tabContent">
             <div class="tab-pane fade show active" id="config" role="tabpanel" aria-labelledby="config-tab">
               <br/>
-              <p>Please enter your LUIS Regieon and <a href="https://portal.azure.com/#blade/HubsExtension/BrowseResourceBlade/resourceType/Microsoft.CognitiveServices%2Faccounts">Ocp Apim Subscription Key</a></p>
+              <p>Please enter your LUIS Region and <a href="https://portal.azure.com/#blade/HubsExtension/BrowseResourceBlade/resourceType/Microsoft.CognitiveServices%2Faccounts">Ocp Apim Subscription Key</a></p>
               <p>Note. A <a href="https://azure.microsoft.com/en-us/try/cognitive-services/?api=spellcheck-api"> bing Spellcheck Api Key</a> is optional</p>
               <form action="/config/" method="post">
               <% if(skPlaceholder == '' ){skPlaceholder="Please enter Ocp Apim Subscription Key"}; %>
@@ -184,6 +187,9 @@
               </tbody>
             </table>
           </div>
+        </div>
+        <div class="tab-pane fade" id="users" role="tabpanel" aria-labelledby="users-tab">
+          ...
         </div>
       </div>
     </div>

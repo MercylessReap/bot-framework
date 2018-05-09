@@ -1,8 +1,27 @@
-var express = require('express')
-var router = express.Router()
+const express = require('express')
+    , router = express.Router()
+    , api = require(rootDir+'/lib/api')
 
-router.get('/',(req, res) =>{res.render('pages/dashboard/index',{title: "Dashboard | Dimension Data Bot Portal"})});
+router.get('/',(req, res) =>{
+    if(isBlank(user)){
+        // Index page
+        res.redirect('pages/guide/index',{title: "Dimension Data Bot Portal"})
+    }else{
+        api.getSettings().then((setting)=>{
+            console.log(setting.data)
+            if(setting.data < 1 || setting.data === 'Error retrieving settings'){
+                res.redirect('/install')
+            }else{
+                res.render('pages/dashboard/index',{title: "Dashboard | Dimension Data Bot Portal"})
+            }
+        }).catch((error)=>{console.log(error)})
+    }
+});
 
 router.get('/alerts',(req, res) =>{res.render('pages/dashboard/alerts',{title: "Dashboard - Alerts | Dimension Data Bot Portal"})});
 
 module.exports = router
+
+function isBlank(str) {
+    return (!str || /^\s*$/.test(str));
+}

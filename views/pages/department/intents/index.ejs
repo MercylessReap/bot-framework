@@ -2,13 +2,13 @@
 <html lang="en">
 
 <head>
-    <% include ../../../../partials/head %>
+    <% include ../../../partials/head %>
 </head>
 
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
 
     <header>
-        <% include ../../../../partials/header %>
+        <% include ../../../partials/header %>
     </header>
     <div class="content-wrapper">
         <div class="container-fluid">
@@ -107,7 +107,7 @@
             </div>
         </div>
         <% include delete %>
-        <% include ../../../../partials/footer %>
+        <% include ../../../partials/footer %>
         <script>
             function deleteintent(id){ 
                 let url = window.location.protocol+'//'+window.location.hostname+'/department/intents/'+id+'/delete/',

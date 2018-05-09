@@ -40,7 +40,7 @@ router.post('/', (req, res, next) => {
     newsetting.subscriptionKey = req.body.subKey, 
     newsetting.luisRegion = req.body.luisRegion, 
     newsetting.bingApiKey = req.body.bingKey,
-    newsetting.bingSpellCheckEnabled = bingStatus,
+    newsetting.bingSpellCheckEnabled = false,
    
     newsetting.save((err, insertedsetting) => {
         if(err){

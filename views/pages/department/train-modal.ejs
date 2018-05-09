@@ -28,19 +28,9 @@
 </div>
 <script>
 let intents;
-function loadIntents() {
-    var luisUrl = window.location.toString()+"/intents/",
-        intentReq = new XMLHttpRequest();
-    intentReq.addEventListener("load", holdIntents(this.responseText));
-    intentReq.open("GET", luisUrl);
-    intentReq.send();
-}
-function holdIntents(i){
-  intents = JSON.parse(i)
-}
+
 function reqListener () {
   console.log(this.responseText)
-  console.log(intents)
   if(this.responseText !== ""){
     
     let failed = false, 
@@ -58,7 +48,7 @@ function reqListener () {
             console.log(luisTrainStatus[i].modelId)
             console.log(luisTrainStatus[i].details.status)
             console.log(luisTrainStatus[i].details.failureReason)
-            trainList = trainList+'<tr><td>'+luisTrainStatus[i].modelId+'</td>'+'<td>'+luisTrainStatus[i].details.status+'</td>'+'<td>'+luisTrainStatus[i].details.failureReason+'</td></tr>'
+            trainList = trainList+'<tr><td>'+findIntentName(luisTrainStatus[i].modelId)+'</td>'+'<td>'+luisTrainStatus[i].details.status+'</td>'+'<td>'+luisTrainStatus[i].details.failureReason+'</td></tr>'
             trainTable.innerHTML = trainList
             failed = true
           }
@@ -66,10 +56,8 @@ function reqListener () {
         if(failed !==true){
           for(let i=0; i< luisTrainStatus.length; i++){
             if(luisTrainStatus[i].details.status === "Success"){
-                
-                console.log(findIntentName(luisTrainStatus[i].modelId))
                 console.log(luisTrainStatus[i].details.status)
-                trainList = trainList+'<tr><td>'+luisTrainStatus[i].modelId+'</td>'+'<td>'+luisTrainStatus[i].details.status+'</td>'+'<td>N/A</td></tr>'
+                trainList = trainList+'<tr><td>'+findIntentName(luisTrainStatus[i].modelId)+'</td>'+'<td>'+luisTrainStatus[i].details.status+'</td>'+'<td>N/A</td></tr>'
                 trainTable.innerHTML = trainList
                 failed = false
             }
@@ -78,9 +66,9 @@ function reqListener () {
         trainStatus(failed)
     }
   }else{
-        console.log('App needs to train first')
-        trainModel()
-        location.reload()
+    console.log('App needs to train first')
+    trainModel()
+    location.reload()
   }
 }
 
@@ -108,32 +96,29 @@ function trainStatus(failed){
 }
 
 function trainModel(){
-    let url = window.location.toString()+"/train"
-    var trainReq = new XMLHttpRequest();
-    trainReq.addEventListener("load", reqListener);
-    trainReq.open("GET", url);
-    trainReq.send();
+  let url = window.location.toString()+"/train"
+  var trainReq = new XMLHttpRequest();
+  trainReq.addEventListener("load", reqListener);
+  trainReq.open("GET", url);
+  trainReq.send();
 }
 
 function findIntentName(id){
-  let intentName;
-  var url = window.location.toString()+"/intents"
-  let intentNameReq = new XMLHttpRequest();
-  intentName.addEventListener("load", intentLoop(id));
-  intentName.open("GET", url);
-  intentName.send();
+  
 }
-function intentLoop(id){
-  console.log(this.responseText)
-  for(let i=0; i< this.responseText[i]; i++){
-    if(this.responseText[i].id == id){
-      return this.responseText[i].name
-    }else{
-      return 'None'
-    }
-  }
+function getLuisIntents(){
+  let url = window.location.toString()+"/intents",
+      intentNameReq = new XMLHttpRequest();
+      intentNameReq.open("GET", url, true);
+  intentNameReq.addEventListener("load", test)
+  intentNameReq.send(null);
 }
-var url = window.location.toString()+"/appstatus"
+function test(){
+  luisIntents= JSON.parse(this.responseText);
+}
+
+var url = window.location.toString()+"/appstatus",
+    luisIntents
 var oReq = new XMLHttpRequest();
 oReq.addEventListener("load", reqListener);
 oReq.open("GET", url);
