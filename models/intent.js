@@ -1,11 +1,10 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+const mongoose = require('mongoose')
+    , Schema = mongoose.Schema;
 
-var intentSchema = new Schema({
-    name: { type: String },
-    friendlyName: { type: String },
+const intentSchema = new Schema({
+    name: String ,
+    friendlyName: String ,
     luisId: String,
-    synonyms:Array,
     answer:Array,
     department: String,
     disabled: { type: String, default: 'false' },

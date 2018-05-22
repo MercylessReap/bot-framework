@@ -1,12 +1,13 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+const mongoose = require('mongoose')
+    , Schema = mongoose.Schema
 
-var permissionSchema = new Schema({
-    wizzard: Array,
-    members: Array,
-    department: {type: Object, unique: true},
-    created: { type: Date, default: Date.now },
-    updated: { type: Date, default: Date.now }
-});
+    , permissionSchema = new Schema({
+        userId: { type: String, unique: true },
+        wizard: { type: Boolean, default: false },
+        department: String,
+        admin: { type: Boolean, default: false },
+        created: { type: Date, default: Date.now },
+        updated: { type: Date, default: Date.now }
+    });
 
 module.exports = mongoose.model('permission', permissionSchema, 'permissions');
