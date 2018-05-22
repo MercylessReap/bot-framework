@@ -1,80 +1,13 @@
-<footer class="sticky-footer">
-    <div class="container">
-      <div class="text-center">
-        <small>Copyright © Dimension Data 2018</small>
-      </div>
+<footer class="app-footer">
+
+    <div class="ml-auto">
+      <span>&copy; 2018 DimensionData.</span>
     </div>
   </footer>
-  <!-- Scroll to Top Button-->
-  <a class="scroll-to-top rounded" href="#page-top">
-    <i class="fa fa-angle-up"></i>
-  </a>
-  <!-- Logout Modal-->
-  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Ready to Leave ?</h5>
-          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-          <a class="btn btn-primary" href="/logout">Logout</a>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- Bootstrap core JavaScript-->
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-  <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
-  <!-- Core plugin JavaScript-->
-  <script src="https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
-  <!-- Custom scripts for this App-->
-  <script src="../../../../vendor/theme/js/dd-admin-charts.js"></script>
-  <script src="../../../../vendor/theme/js/dd-admin.js"></script>
-  <script>
-    Notification.requestPermission();
-    function notifyMe() {
-      // Let's check if the browser supports notifications
-      if (!("Notification" in window)) {
-        alert("This browser does not support system notifications");
-      }
-
-      // Let's check whether notification permissions have already been granted
-      else if (Notification.permission === "granted") {
-        // If it's okay let's create a notification
-        var notification = new Notification("Hi there!");
-      }
-
-      // Otherwise, we need to ask the user for permission
-      else if (Notification.permission !== 'denied') {
-        Notification.requestPermission(function (permission) {
-          // If the user accepts, let's create a notification
-          if (permission === "granted") {
-            var notification = new Notification("Hi there!");
-          }
-        });
-      }
-
-      // Finally, if the user has denied notifications and you 
-      // want to be respectful there is no need to bother them any more.
-    }
-    function spawnNotification(theBody,theIcon,theTitle) {
-      var options = {
-          body: theBody,
-          icon: theIcon
-      }
-      var n = new Notification(theTitle,options);
-      setTimeout(n.close.bind(n), 50000); 
-    }
-
-  </script>
-
-</div>
+  <!-- Bootstrap and necessary plugins-->
+  <script src="../vendor/jquery/dist/jquery.min.js"></script>
+  <script src="../vendor/popper.js/dist/umd/popper.min.js"></script>
+  <script src="../vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="../vendor/pace-progress/pace.min.js"></script>
+  <script src="../vendor/perfect-scrollbar/dist/perfect-scrollbar.min.js"></script>
+  <script src="../vendor/@coreui/coreui/dist/js/coreui.min.js"></script>

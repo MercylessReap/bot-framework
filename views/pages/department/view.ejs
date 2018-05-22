@@ -1,213 +1,178 @@
-<%//Department Index.ejs 
-%>
-<!-- views/pages/index.ejs -->
-
 <!DOCTYPE html>
 <html lang="en">
-<head>
   <% include ../../partials/head %>
-</head>
-<body class="fixed-nav sticky-footer bg-dark" id="page-top">
-
-<header>
+<body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">
   <% include ../../partials/header %>
-</header>
-
-<div class="content-wrapper">
-    <div class="container-fluid">
-      <!-- Breadcrumbs-->
+  <div class="app-body">
+    <% include ../../partials/sidenav %>
+    <main class="main">
+      <!-- Breadcrumb-->
       <ol class="breadcrumb">
+        <li class="breadcrumb-item">Home</li>
         <li class="breadcrumb-item">
           <a href="/">Dashboard</a>
         </li>
         <li class="breadcrumb-item active"><%=data.friendlyName%></li>
-      </ol>
-      <div class="row">
-        <div class="col-12">
-          <h1><%=data.friendlyName%>
-          <% if(user.perm.admin == true ||user.perm.wizard == true ){ %>
-            <span class="btn-right">
-              <button id="editBtn" title="" class="btn btn-md btn-info"><i id="train-status" class="fa "></i> Edit </button>
-            </span>
-          <% } %>
-          </h1>
-          <p id="deptInfo">Here you can view the details for the departments bot.</p>
-        </div>
-        <div class="container-fluid col-12">
-            <div class="form-row">
-              <div class="form-group col-md-3">
-                <label for="botName">Bot Name</label>
-                <% if(data.botName ===''){var botName = 'No bot created yet...',botNameValue=''}else{botName=botNameValue=data.botName}%>
-                <input readonly type="text" class="form-control-plaintext" id="botName" name="botName" value="<%=botNameValue%>" placeholder="<%=botName%>">
-              </div>
-              <div class="form-group col-md-5">
-                <label for="confluence">Confluence</label>
-                <% if(data.confluence ===''){var confluence = 'No confluence space assigend...',confluenceValue=''}else{confluence=confluenceValue=data.confluence}%>
-                <input  readonly type="text" class="form-control-plaintext" id="confluence" name="confluence" value="<%=confluenceValue%>" placeholder="<%=confluence%>">
-              </div>
-              <div class="form-group col-md-3">
-                <label for="luisState">LUIS Production State</label>
-                <% if(data.luisState ===''){var luisState = 'Unpublished', luisValue=''}else{luisState=luisValue=data.luisState}%>
-                <input readonly type="text" class="form-control-plaintext" id="luisState" name="luisState" value="<%=luisValue%>" placeholder="<%=luisState%>">
-              </div>
-            </div>    
-        </div>
-        <div class="container-fluid">
-          <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-            <li class="nav-item">
-              <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Intents</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" id="pills-team-tab" data-toggle="pill" href="#pills-team" role="tab" aria-controls="pills-team" aria-selected="false">Team</a>
-            </li>
-            <li class="nav-item display-none">
-              <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">Logs</a>
-            </li>
-          </ul>
-          <div class="container-fluid">
-          <div class="tab-content" id="pills-tabContent">
-            <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-                 <div class="col-12">
-                    <h1>Intents
-                        <span class="btn-right">
-                            <button type="button" data-toggle="modal" data-target=".bd-example-modal-lg" class="btn btn-md btn-success">Add Intent</button>
-                        </span>
-                    </h1>
-                    <p>This is you can view existing questions the bot can answer, update them or create new ones.</p>
-                </div>
-                <div class="col-12">
+        <!-- Breadcrumb Menu-->
+        <li class="breadcrumb-menu d-md-down-none">
+          <div class="btn-group" role="group" aria-label="Button group">
 
-                    <table id="tiTable" class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Department</th>
-                                <th scope="col">Updated</th>
-                                <th scope="col">Status</th>
-                                <th scope="col">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="intentList">
-                            <% for(i=0; i< intents.length; i++) { 
-                                if(intents[i].department == user.department){ %>
-                                                                <tr>
-                            <% let id = intents[i]._id.toString(),
-                                  disabled;
-                              if (intents[i].diasbled == "true") {disabled = 'Disabled'} else { disabled = 'Enabled'}
-                              let count = i+1;
-                              let b = intents[i].updated.split(/\D+/),
-                                  c = intents[i].created.split(/\D+/),
-                                  updated = new Date(Date.UTC(b[0], --b[1], b[2], b[3], b[4], b[5], b[6])),
-                                  created = new Date(Date.UTC(b[0], --c[1], c[2], c[3], c[4], c[5], c[6]))
-
-                              %>
-                              
-                              <th scope='row'><%=count%></th>
-                              <td><%= intents[i].name %></td>
-                              <td><%= data.friendlyName %></td>
-                              <td><%= updated%></td>
-                              <td><%=disabled %></td>
-                              <td><a class="btn btn-primary" href="/department/intents/<%= id %>">View</a> <span class="btn-right"><button class="btn btn-danger" onclick="deleteintent('<%= id %>')">Delete</button></span></td>
-                              </tr>
-                            <% }} %>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="tab-pane fade" id="pills-team" role="tabpanel" aria-labelledby="pills-team-tab">
-              <% if(user.perm.admin == true || user.perm.wizard == true){ %>
-              <p>So <%=user.name%> I see you want to <a class="btn btn-success" title="You smart, click here to sort this team out" href="/department/users/">Manage the Team</a> I think you know what to do ;)</p>
-              <% }else{ %>
-              <p>Hey <%=user.name%>, See your team below </p>
-              <% } %>
-              <table id="tiTable" class="table table-hover">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Created</th>
-                        <th scope="col">Admin</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td>Stuart Young</td>
-                        <td>05/03/2018 12:59</td>
-                        <td>Yes</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>Larry James</td>
-                        <td>05/03/2018 12:59</td>
-                        <td>No</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>Harry Potter</td>
-                        <td>05/03/2018 12:59</td>
-                        <td>No</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td>The Wizard</td>
-                        <td>05/03/2018 12:59</td>
-                        <td>Yes</td>
-                    </tr>
-                </tbody>
-            </table>
-            </div>
-            <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
-              <table id="tiTable" class="table table-hover">
-                <thead>
-                  <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Created</th>
-                                <th scope="col">Type</th>
-                                <th scope="col">Info</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>05/03/2018 12:59</td>
-                                <td>User Created</td>
-                                <td>User Tom Banks Created by Stuart Young</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>10/03/2018 11:59</td>
-                                <td>User Updated</td>
-                                <td>User Tom Banks Updated by Stuart Young</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td>15/03/2018 14:59</td>
-                                <td>Intent Created</td>
-                                <td>
-                                    <a href="#">Office Intent</a> Created by Tom Banks
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-            </div>
           </div>
+        </li>
+      </ol>
+      <div class="container-fluid">
+        <div class="animated fadeIn">
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="card">
+                <div class="card-body">
+                  <h2 class="card-title"><%=data.friendlyName%>
+                    <% if(user.perm.admin == true ||user.perm.wizard == true ){ %>
+                    <span class="btn-right">
+                      <button id="trainBtn" title="" data-toggle="modal" data-target=".bd-train-modal" class="btn btn-md btn-info"><i id="train-status" class="fa "></i> Train</button>
+                      <button type="button" data-toggle="modal" data-target=".bd-publish-modal-lg" class="btn btn-md btn-success">Publish</button>
+                      <% if(user.perm.wizard == true ){ %>
+                      <button type="button" data-toggle="modal" data-target=".bd-delete-modal" class="btn btn-md btn-danger">Delete</button>
+                      <%}%>
+                    </span>
+                    <%}%>
+                  </h2>
+                  <% if(user.perm.wizard == true ){ %>
+                    <p id="deptInfo">Here you can edit the details for the departments bot. <br/> Bot Message Endpoint: </p>
+                  <% }else if(user.perm.admin == true ){ %>
+                  <p>Here you can edit the details for the departments bot.</p>
+                  <%}else{%>
+                    <p>Here you can view the details for the departments bot.</p>
+                  <%}%>
+                </div>
+              </div>
+            </div>
+            <% if(user.perm.admin == true ||user.perm.wizard == true ){ %>
+              <div class="col-sm-12">
+                <div class="card">
+                  <div class="card-body">
+                    <form id="putDepartment" action="/department/<%=data._id%>" method="post">
+                      <div class="form-row">
+                        <div class="form-group col-md-7">
+                          <label for="departmentName">Department Name</label>
+                          <input required type="text" class="form-control" id="departmentName" name="friendlyName" value="<%=data.friendlyName%>" placeholder="<%=data.friendlyName%>">
+                        </div>
+                        <div class="form-group col-md-5">
+                          <label for="confluence">Confluence</label>
+                          <% if(data.confluence ===''){var confluence = 'Please enter confluence space...',confluenceValue=''}else{confluence=confluenceValue=data.confluence}%>
+                          <input  type="text" class="form-control" id="confluence" name="confluence" value="<%=confluenceValue%>" placeholder="<%=confluence%>">
+                        </div>
+                      </div>
+                      <% if(user.perm.wizard == true ){ %>
+                      <div class="form-row">
+                        <div class="form-group col-md-2">
+                          <label for="botName">Bot Name</label>
+                          <% if(data.botName ===''){var botName = 'Please enter azure bot name...',botNameValue=''}else{botName=botNameValue=data.botName}%>
+                          <input required type="text" class="form-control" id="botName" name="botName" value="<%=botNameValue%>" placeholder="<%=botName%>">
+                        </div>
+                        <div class="form-group col-md-5">
+                          <label for="microsoftAppId">Microsoft Bot App ID</label>
+                          <% if(data.microsoftBotAppId ===''){var microsoftBotAppId = 'Please enter Microsoft App ID...',microsoftBotAppIdValue=''}else{microsoftBotAppId=microsoftBotAppIdValue=data.microsoftBotAppId}%>
+                          <input required type="text" class="form-control" id="microsoftAppId" name="microsoftAppId" value="<%=microsoftBotAppIdValue%>" placeholder="<%=microsoftBotAppId%>">
+                        </div>
+                        <div class="form-group col-md-5">
+                          <label for="microsoftAppPass">Microsoft Bot App Password</label>
+                          <% if(data.microsoftBotAppPass ===''){var microsoftBotAppPass = 'Please enter Microsoft Bot App Password...',microsoftBotAppPassValue=''}else{microsoftBotAppPass=microsoftBotAppPassValue=data.microsoftBotAppPass}%>
+                          <input required type="text" class="form-control" id="microsoftAppPass" name="microsoftAppPass" value="<%=microsoftBotAppPassValue%>" placeholder="<%=microsoftBotAppPass%>">
+                        </div>
+                      </div>
+
+                      <div class="form-row">
+                        <div class="form-group col-md-6">
+                          <label for="sparkAccessToken">Cisco Spark Acess Token</label>
+                          <% if(data.sparkAccessToken ===""){var sparkAccessToken = 'Please enter Microsoft Bot App Password...',sparkAccessTokenValue=''}else{sparkAccessToken=sparkAccessTokenValue=data.sparkAccessToken}%>
+                          <input type="text" class="form-control" id="sparkAccessToken" name="sparkAccessToken" placeholder="<%=sparkAccessToken%>" value="<%=sparkAccessTokenValue%>">
+                        </div>
+                        <div class="form-group col-md-6">
+                          <label for="analytics">Analytics</label>
+                          <% if(data.analyticsId ===''){var analytics = 'Please enter Microsoft Bot App Password...',analyticsValue=''}else{analytics=analyticsValue=data.analyticsId}%>
+                          <input type="text" class="form-control" id="analytics" name="analyticsId" value="<%=analyticsValue%>"placeholder="<%=analytics%>">
+                        </div>
+                      </div>
+                      <%}%>
+                      <div class="form-row">
+                        <div class="form-group col-md-3">
+                          <label for="luisName">Luis App Name</label>
+                          <input required readonly type="text" class="form-control-plaintext" id="luisName" name="name" value="<%=data.name%>" placeholder="<%=data.name%>">
+                        </div>
+                        <div class="form-group col-md-5">
+                          <label for="luisAppId">LUIS App ID</label>
+                          <input required readonly type="text" class="form-control-plaintext" id="luisAppId" name="luisAppId" value="<%=data.luisAppId%>" placeholder="<%=data.luisAppId%>">
+                        </div>
+                        <div class="form-group col-md-1">
+                          <label for="luisAppPass">App Ver</label>
+                          <input required readonly type="text" class="form-control-plaintext" id="luisAppVer" name="luisAppVer" value="<%=data.luisAppVer%>" placeholder="<%=data.luisAppVer%>">
+                        </div>
+                        <div class="form-group col-md-3">
+                          <label for="luisState">LUIS Production State</label>
+                          <% if(data.luisState ===''){var luisState = 'Unpublished', luisValue=''}else{luisState=luisValue=data.luisState}%>
+                          <input required readonly type="text" class="form-control-plaintext" id="luisState" name="luisState" value="<%=luisValue%>" placeholder="<%=luisState%>">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <input type="hidden" class="form-control" name="appid" value="<%=data.luisAppId%>">
+                        <input type="hidden" class="form-control" name="id" value="<%=data._id%>">
+                      </div>
+                      <div class="form-group">
+                          <input id="postDepartment" type="submit" value="save" class="btn btn-primary">
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            <% } %>
+
+            <div class="col-sm-12">
+              <div class="card">
+                <div class="card-body">
+                  <div class="form-row">
+                    <div class="form-group col-md-3">
+                      <label for="botName">Bot Name</label>
+                      <% if(data.botName ===''){var botName = 'No bot created yet...',botNameValue=''}else{botName=botNameValue=data.botName}%>
+                      <input readonly type="text" class="form-control-plaintext" id="botName" name="botName" value="<%=botNameValue%>" placeholder="<%=botName%>">
+                    </div>
+                    <div class="form-group col-md-5">
+                      <label for="confluence">Confluence</label>
+                      <% if(data.confluence ===''){var confluence = 'No confluence space assigend...',confluenceValue=''}else{confluence=confluenceValue=data.confluence}%>
+                      <input  readonly type="text" class="form-control-plaintext" id="confluence" name="confluence" value="<%=confluenceValue%>" placeholder="<%=confluence%>">
+                    </div>
+                    <div class="form-group col-md-3">
+                      <label for="luisState">LUIS Production State</label>
+                      <% if(data.luisState ===''){var luisState = 'Unpublished', luisValue=''}else{luisState=luisValue=data.luisState}%>
+                      <input readonly type="text" class="form-control-plaintext" id="luisState" name="luisState" value="<%=luisValue%>" placeholder="<%=luisState%>">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <% include ./intents/add %>
-            </div>
-        </div>
-    </div>
-    <!-- /.container-fluid-->
-    <!-- /.content-wrapper-->
-<% include ../../partials/footer %>
+    </main>
+    <script>
+      var botEnd = document.getElementById('deptInfo'),
+          id = document.getElementsByName('id')[0].value;;
+          botEnd.innerHTML= botEnd.innerHTML +' '+ botMesageEndpoint()
+    function botMesageEndpoint(){
+      let host = window.location.protocol+'//'+window.location.hostname;
+      let botUrl = host + '/bot/'+id+'/messages';
+      return botUrl
+    }
+  </script>
+    <% include ./modals/train %>
 
+    <% include ./modals/publish %>
+
+    <% include ./modals/delete %>
+    <% //include ../../partials/aside %>
+  </div>
+  <% include ../../partials/footer %>
 
 </body>
+
 </html>
